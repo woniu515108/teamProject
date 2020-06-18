@@ -13,6 +13,16 @@ import UserList from '@/pages/UserList';
 
 Vue.use(Router)
 
+/**
+ * 解决ElementUI导航中的vue-router在3.0版本以上重复点击菜单报错问题
+ * error: Avoided redundant navigation to current location: "/home/user-list".
+*/
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
+
 export default new Router({
     routes: [
         {

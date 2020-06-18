@@ -1,7 +1,7 @@
 <template>
     <div class="home-page">
         <el-container>
-            <el-header>Header</el-header>
+            <el-header>大话西游2周边商城后台管理系统</el-header>
             <el-container>
                 <el-aside width="200px">
                     
@@ -12,28 +12,10 @@
                                 class="el-menu-vertical-demo"
                                 @open="handleOpen"
                                 @close="handleClose"
-                                background-color="#545c64"
                                 text-color="#fff"
+                                background-color='#094574'
                                 active-text-color="#ffd04b"
-                                router="true">
-                                <!-- <el-submenu index="1">
-                                    <template slot="title"> 
-                                        <i class="el-icon-location"></i>
-                                        <span>导航一</span>
-                                    </template>
-                                    <el-menu-item-group>
-                                        <template slot="title">分组一</template>
-                                        <el-menu-item index="1-1">选项1</el-menu-item>
-                                        <el-menu-item index="1-2">选项2</el-menu-item>
-                                    </el-menu-item-group>
-                                    <el-menu-item-group title="分组2">
-                                        <el-menu-item index="1-3">选项3</el-menu-item>
-                                    </el-menu-item-group>
-                                    <el-submenu index="1-4">
-                                        <template slot="title">选项4</template>
-                                        <el-menu-item index="1-4-1">选项1</el-menu-item>
-                                    </el-submenu> 
-                                </el-submenu> -->
+                                router>
                                 <el-menu-item index="/home/over-view">
                                     <i class="el-icon-s-home"></i>
                                     <span slot="title">概览</span>
@@ -54,12 +36,15 @@
                 </el-aside>
                 <el-container>
                     <el-main>
-
+                        <el-breadcrumb separator-class="el-icon-arrow-right" class="location">
+                            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                            <el-breadcrumb-item>商品管理</el-breadcrumb-item>
+                        </el-breadcrumb>
                         <router-view/>                      
 
 
                     </el-main>
-                    <el-footer>我是页脚</el-footer>
+                    <el-footer>技术支持：我们都对团队&nbsp;&nbsp;&nbsp;&nbsp;地址：广东省广州市天河区天寿大厦三层</el-footer>
                 </el-container>
             </el-container>
         </el-container>
@@ -115,14 +100,18 @@ export default {
         }
 
         .el-header, .el-footer {
-            background-color: #B3C0D1;
-            color: #333;
+            background-color: #002b4c;
+            color: #fff;
             text-align: center;
             line-height: 60px;
         }
-        
+        .el-header{
+            text-align:left;
+        }
+        .el-footer{
+            font-size:14px;
+        }
         .el-aside {
-            background-color: #D3DCE6;
             color: #333;
             text-align: center;
             line-height: 200px;
@@ -132,7 +121,9 @@ export default {
             background-color: #E9EEF3;
             color: #333;
             text-align: center;
-            line-height: 160px;
+            .location{
+                margin-bottom:20px;
+            }
         }
         
         body > .el-container {
