@@ -1,7 +1,7 @@
 <template>
     <div class="login-page">
 
-        <el-button type="primary" @click="submit">登陆</el-button>
+        <el-button type="primary" @click="submit">登陆1111111111111111111111111111111111111111111</el-button>
 
     </div>
 </template>
