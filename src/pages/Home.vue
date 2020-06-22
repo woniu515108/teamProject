@@ -36,10 +36,11 @@
                 </el-aside>
                 <el-container>
                     <el-main>
-                        <el-breadcrumb separator-class="el-icon-arrow-right" class="location">
+                        <el-breadcrumb separator-class="el-icon-arrow-right" class="location" v-if="isShowBread">
                             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
                             <el-breadcrumb-item>商品管理</el-breadcrumb-item>
                         </el-breadcrumb>
+
                         <router-view/>                      
 
 
@@ -57,12 +58,65 @@ export default {
     name: 'home',
     data () {
         return {
+            isShowBread: true,
             msg: 'Welcome to Your Vue.js App'
         }
     },
 
+    beforeCreate(){
+        console.log( "beforeCreate() 组件创建前..." );
+    },
+    created(){
+        console.log("created() 组件创建完成！");
+        this.getNowRouter();
+
+
+    },
+
+    beforeMount(){
+        console.log( "beforeMount() 组件挂载前..." );
+    },
+    mounted(){
+        console.log( "mounted() 组件挂载完成!" );
+    },
+
+    beforeUpdate(){
+        console.log( "beforeUpdate() 组件更新前..." );
+    },
+
+    updated() {
+        console.log( "updated() 组件更新完成！" );
+        this.getNowRouter();
+    },
+
+    beforeDestroy(){
+        console.log( "beforeDestroy() 组件销毁前..." );
+    },
+
+    destroyed(){
+        console.log( "destroyed() 组件销毁完成" );
+    },
+
+
 
     methods: {
+        /**
+         * @description: 获取当前路由
+         * @param {type} 
+         * @return: 
+         * @time: 
+         * @by: 
+         */      
+        getNowRouter(){
+            console.log( this.$route.path );
+            if( this.$route.path === '/home/over-view' ){
+                this.isShowBread = false;
+            }else{
+                this.isShowBread = true;
+            }
+        },
+
+        
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
         },
@@ -78,20 +132,43 @@ export default {
         min-height: 100vh;
         >.el-container{
             min-height: 100vh;
-            >.el-header{
-
+            >.el-header, .el-footer {
+                color: #fff;
+                line-height: 60px;
+                background-color: #002b4c;
+                &.el-header{
+                    text-align:left;
+                }
+                &.el-footer{
+                    text-align: center;
+                    font-size:14px;
+                }
             }
+            
             >.el-container{
                 
                 
                 .el-aside{
-                    .el-menu{
-                        min-height: calc( 100vh - 60px );
+                    .left-nav {
+                        height: 100%;
+                        .el-col{
+                            height: 100%;
+                            .el-menu{
+                                // min-height: calc( 100vh - 60px );
+                                height: 100%;
+                            }
+
+                        }
+                        
                     }
+                    
                 }
 
                 >.el-container{
-
+                    .el-main{
+                        padding: 16px;
+                        overflow: hidden;
+                    }
                 }
 
 
@@ -99,18 +176,7 @@ export default {
 
         }
 
-        .el-header, .el-footer {
-            background-color: #002b4c;
-            color: #fff;
-            text-align: center;
-            line-height: 60px;
-        }
-        .el-header{
-            text-align:left;
-        }
-        .el-footer{
-            font-size:14px;
-        }
+        
         .el-aside {
             color: #333;
             text-align: center;

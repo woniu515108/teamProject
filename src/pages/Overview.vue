@@ -1,42 +1,53 @@
 <template>
     <el-row class="over-view-component">
-        <el-col :span="24" class="data-header">
-            <p class="title">大话西游周边商城数据可视化展示</p>
-        </el-col>
+        <!-- <el-col :span="24" class="data-header">
+            <p class="link link--kukuri title" data-letters='大话西游周边商城数据可视化展示'>大话西游周边商城数据可视化展示</p>
+        </el-col> -->
+
         <!-- row_one begin -->
         <el-row :gutter="20" class="data-content-first">
-            <el-col :xs="24" :lg="10" class="first-left">
+            <el-col :lg="10" class="">
                 <div class="grid-content">
-                    <p class="title">统计数据</p>
-                    <el-row>
-                        <el-col :span="12" class="border_right">
-                            <div class="grid-content">
-                                <div class="order_num">
-                                    <p class="subTitle">下单数量</p>
-                                    <div class="order_con">{{order_num}}</div>
-                                </div>
-                            </div>
-                            </el-col>
-                        <el-col :span="12">
-                            <div class="grid-content">
-                                <div class="grid-content">
-                                <div class="order_num">
-                                    <p class="subTitle">销售金额</p>
-                                    <div class="order_con">{{order_money}}</div>
-                                </div>
-                            </div>
-                            </div>
-                        </el-col>
-                    </el-row>
+                    <div class="first-left">
+                        <p class="title">统计数据</p>
+                        <!-- <div :style="{width: '100%', height: '300px'}"> -->
+                            <el-row :style="{width: '100%', height: '300px'}">
+                                <el-col :span="12">
+                                    <div class="grid-content left">
+                                        <div class="order_num">
+                                            <p class="subTitle">下单数量</p>
+                                            <div class="order_con">{{order_num}}</div>
+                                        </div>
+                                    </div>
+                                </el-col>
+                                <el-col :span="12">
+                                    <div class="grid-content right">
+                                        <div class="grid-content">
+                                        <div class="order_num">
+                                            <p class="subTitle">销售金额</p>
+                                            <div class="order_con">{{order_money}}</div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </el-col>
+                            </el-row>
+                        <!-- </div> -->
+                        
+                    </div>
                 </div>
             </el-col>
-            <el-col :xs="24" :lg="13" class="first-right">
+
+            <el-col :lg="14" class="">
                 <div class="grid-content">
-                    <p class="title">销量统计折线图</p>
-                    <div id="zhexian" :style="{width: '100%', height: '300px'}"></div>
+                    <div class="first-right">
+                        <p class="title">销量统计折线图</p>
+                        <div id="zhexian" :style="{width: '100%', height: '300px'}"></div>
+                    </div>
+                    
                 </div>
             </el-col>
         </el-row>
+
         <!-- row_one end -->
         <!-- row_two begin -->
         <el-row :gutter="20" class="data-content-sec">
@@ -49,7 +60,7 @@
             <el-col :xs="24" :md="12" :lg="7">
                 <div class="grid-content">
                     <p class="title">访客来源统计</p>
-                    <div id="visitor" :style="{width: '90%', height: '100%'}"></div>
+                    <div id="visitor" :style="{width: '100%', height: '100%'}"></div>
                 </div>
             </el-col>
             <el-col :xs="24" :md="12" :lg="7">
@@ -106,7 +117,7 @@ export default {
                 legend: {
                     data: ['今年', '去年'],
                     textStyle:{
-                        color:'#fff'
+                        color:'#333'
                     }
                 },
                 toolbox: {
@@ -167,7 +178,7 @@ export default {
                 legend: {
                     data: ['男性', '女性'],
                     textStyle:{
-                        color:'#fff'
+                        color:'#333'
                     }
                 },
                 grid: {
@@ -409,41 +420,155 @@ export default {
 
 <style scoped lang="less">
     .over-view-component{
-        background:#020913;
-        .title{
-            color: #fff;
+        /** ------ elemnt 样式重置： 开始 ------- **/ 
+        // .el-row{
+        //     margin: 0 !important;
+        // }
+        /** ------ elemnt 样式重置： 结束 ------- **/ 
+
+
+
+        // background:#020913;
+        .data-header{
+            // .title{
+            //     margin-top: 0;
+            //     color: #fff;
+            // }
+            
+
+            .link {
+                margin-top: 0;
+                margin-bottom: 16px;
+                outline: none;
+                text-decoration: none;
+                position: relative;
+                font-size: 20px;
+                color: #000000;
+                display: inline-block;
+                cursor: pointer;
+            }
+            .link--kukuri {
+                text-transform: uppercase;
+                font-weight: 900;
+                overflow: hidden;
+                color: #000000;
+            }
+            .link--kukuri:hover {
+                color: #b2b0a9;
+            }
+            .link--kukuri::after {
+                content: "";
+                position: absolute;
+                height: 16px;
+                width: 100%;
+                top: 50%;
+                margin-top: -8px;
+                right: 0;
+                background: #f9f9f9;
+                transform: translate3d(-100%, 0, 0);
+                transition: transform 0.4s;
+                transition-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
+            }
+            .link--kukuri:hover::after {
+                transform: translate3d(100%, 0, 0);
+            }
+            .link--kukuri::before {
+                content: attr(data-letters);
+                position: absolute;
+                z-index: 2;
+                overflow: hidden;
+                color: #424242;
+                white-space: nowrap;
+                width: 0%;
+                transition: width 0.4s 0.3s;
+            }
+            .link--kukuri:hover::before {
+                width: 100%;
+            }
+
         }
+        
         .data-content-first{
-            padding:0 20px;
-            height: 400px;
-            color: #fff;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
+            padding: 16px 0;
+            // height: 400px;
+            color: #333;
+            // display: flex;
+            // justify-content: space-around;
+            // align-items: center;
+            background-color: #fff;
+            .el-col:first-child{
+                padding-left: 16px !important;
+                padding-right: 8px !important;
+            }
+            .el-col:last-child{
+                padding-left: 8px !important;
+                padding-right: 16px !important;
+            }
+
             .title{
                 margin:0;
-                text-align: left;
-                height: 44px;
-                background: #03305a;
-                line-height: 44px;
-                font-size: 14px;
                 padding-left: 20px;
+                height: 44px;
+                color: #f5f5f5;
+                font-size: 14px;
+                line-height: 44px;
+                text-align: left;
+                border-radius: 4px 4px 0 0;
+                background: #03305a;
             }
-            .border_right{
-                background: url(../images/center_line.png) no-repeat right center;
-                height: 201px;
-            }
+            // .border_right{
+            //     background: url(../images/center_line.png) no-repeat right center;
+            //     height: 100%;
+            // }
             .first-left{
                 height: 100%;
                 border:1px solid #0078d5;
+                border-radius: 4px;
+                .el-col{
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    .grid-content{
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        width: 100%;
+                        height: 60%;
+                        &.left{
+                            border-right: 1px solid #e5e5e5;
+                        }
+                        &.right{
+                            border-left: 1px solid #e5e5e5;
+                        }
+                    }
+
+                    &:nth-child(1){
+                        padding-right: 0 !important;
+                    }
+                    &:nth-child(2){
+                        padding-left: 0 !important;
+                    }
+                    
+                }
+                
             }
             .first-right{
                 height: 100%;
                 border:1px solid #0078d5;
+                border-radius: 4px;
             }
         }
         .data-content-sec{
-            padding:0 20px;
+            padding:0 4px 20px;
+            background: #fff;
+            >.el-col{
+                >.grid-content{
+
+                    border-radius: 4px;
+                }
+            }
             .grid-content{
                 border:1px solid #0078d5;
                 height: 536px;
@@ -456,6 +581,8 @@ export default {
                     line-height: 44px;
                     font-size: 14px;
                     padding-left: 20px;
+                    border-radius: 4px 4px 0 0;
+                    color: #f5f5f5;
                 }
             }
         }
