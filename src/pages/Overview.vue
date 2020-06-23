@@ -103,17 +103,12 @@ export default {
         zhexian(){
             let myChart  = this.$echarts.init(document.getElementById('zhexian'));
             var xAxisData = [];
-            var data1 = [];
-            var data2 = [];
-            for (var i = 1; i <366; i++) {
-                xAxisData.push('类目' + i);
-                data1.push((Math.sin(i / 5) * (i / 5 -10) + i / 6) * 5);
-                data2.push((Math.cos(i / 5) * (i / 5 -10) + i / 6) * 5);
+            var data1 = [1850000,1478867,2056078,570861,546231,7777081,4687];
+            var data2 = [251670,546781,1154038,5642346,1465795,13300876,554687,1355213,5467954,1020454,19304176,15304876];
+            for (var i = 1; i <=12; i++) {
+                xAxisData.push(i+'月份');
             }
             myChart.setOption({
-                title: {
-                    // text: '柱状图动画延迟'
-                },
                 legend: {
                     data: ['今年', '去年'],
                     textStyle:{
@@ -166,9 +161,6 @@ export default {
         consumer(){
             let myChart  = this.$echarts.init(document.getElementById('consumer'));
             myChart.setOption({
-                title: {
-                    subtext: '数据来自后台统计'
-                },
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -184,8 +176,9 @@ export default {
                 grid: {
                     left: '3%',
                     right: '4%',
-                    bottom: '3%',
-                    containLabel: true
+                    bottom: '15%',
+                    containLabel: true,
+                    height:'400px'
                 },
                 xAxis: {
                     type: 'value',
@@ -215,88 +208,33 @@ export default {
             myChart.setOption({
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
                 },
                 legend: {
                     orient: 'vertical',
-                    left: 10,
-                    data: ['直达', '营销广告', '搜索引擎', '邮件营销', '联盟广告', '视频广告', '百度', '谷歌', '必应', '其他']
+                    left: 'left',
+                    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
                 },
                 series: [
                     {
                         name: '访问来源',
                         type: 'pie',
-                        selectedMode: 'single',
-                        radius: [0, '30%'],
-
-                        label: {
-                            position: 'inner'
-                        },
-                        labelLine: {
-                            show: false
-                        },
+                        radius: '55%',
+                        center: ['50%', '60%'],
                         data: [
-                            {value: 335, name: '直达', selected: true},
-                            {value: 679, name: '营销广告'},
-                            {value: 1548, name: '搜索引擎'}
-                        ]
-                    },
-                    {
-                        name: '访问来源',
-                        type: 'pie',
-                        radius: ['40%', '55%'],
-                        label: {
-                            formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
-                            backgroundColor: '#eee',
-                            borderColor: '#aaa',
-                            borderWidth: 1,
-                            borderRadius: 4,
-                            // shadowBlur:3,
-                            // shadowOffsetX: 2,
-                            // shadowOffsetY: 2,
-                            // shadowColor: '#999',
-                            // padding: [0, 7],
-                            rich: {
-                                a: {
-                                    color: '#999',
-                                    lineHeight: 22,
-                                    align: 'center'
-                                },
-                                // abg: {
-                                //     backgroundColor: '#333',
-                                //     width: '100%',
-                                //     align: 'right',
-                                //     height: 22,
-                                //     borderRadius: [4, 4, 0, 0]
-                                // },
-                                hr: {
-                                    borderColor: '#aaa',
-                                    width: '100%',
-                                    borderWidth: 0.5,
-                                    height: 0
-                                },
-                                b: {
-                                    fontSize: 16,
-                                    lineHeight: 33
-                                },
-                                per: {
-                                    color: '#eee',
-                                    backgroundColor: '#334455',
-                                    padding: [2, 4],
-                                    borderRadius: 2
-                                }
-                            }
-                        },
-                        data: [
-                            {value: 335, name: '直达'},
+                            {value: 335, name: '直接访问'},
                             {value: 310, name: '邮件营销'},
                             {value: 234, name: '联盟广告'},
                             {value: 135, name: '视频广告'},
-                            {value: 1048, name: '百度'},
-                            {value: 251, name: '谷歌'},
-                            {value: 147, name: '必应'},
-                            {value: 102, name: '其他'}
-                        ]
+                            {value: 1548, name: '搜索引擎'}
+                        ],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
                     }
                 ]
             })
@@ -317,6 +255,7 @@ export default {
                         colorLightness: [0, 1]
                     }
                 },
+               
                 series: [
                     {
                         name: '访问来源',
@@ -351,7 +290,7 @@ export default {
                         animationEasing: 'elasticOut',
                         animationDelay: function (idx) {
                             return Math.random() * 200;
-                        }
+                        },
                     }
                 ]
             })
@@ -369,47 +308,48 @@ export default {
                         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                     }
                 },
+                legend: {
+                    data: [ '需要改进', '继续保持']
+                },
                 grid: {
-                    top: 80,
-                    bottom: 30
+                    left: '3%',
+                    right: '4%',
+                    bottom: '15%',
+                    containLabel: true,
+                    height:'400px'
                 },
-                xAxis: {
-                    type: 'value',
-                    position: 'top',
-                    splitLine: {
-                        lineStyle: {
-                            type: 'dashed'
-                        }
+                xAxis: [
+                    {
+                        type: 'value'
                     }
-                },
-                yAxis: {
-                    type: 'category',
-                    axisLine: {show: false},
-                    axisLabel: {show: false},
-                    axisTick: {show: false},
-                    splitLine: {show: false},
-                    data: ['ten', 'nine', 'eight', 'seven', 'six', 'five', 'four', 'three', 'two', 'one']
-                },
+                ],
+                yAxis: [
+                    {
+                        type: 'category',
+                        axisTick: {
+                            show: false
+                        },
+                        data: ['合作快递', '售后服务', '产品质量', '发货速度', '客服服务']
+                    }
+                ],
                 series: [
                     {
-                        name: '生活费',
+                        name: '继续保持',
+                        type: 'bar',
+                        stack: '总量',
+                        label: {
+                            show: true
+                        },
+                        data: [341, 374, 390, 450, 420]
+                    },
+                    {
+                        name: '需要改进',
                         type: 'bar',
                         stack: '总量',
                         label: {
                             show: true,
-                            formatter: '{b}'
                         },
-                        data: [
-                            {value: -0.07, label: labelRight},
-                            {value: -0.09, label: labelRight},
-                            0.2, 0.44,
-                            {value: -0.23, label: labelRight},
-                            0.08,
-                            {value: -0.17, label: labelRight},
-                            0.47,
-                            {value: -0.36, label: labelRight},
-                            0.18
-                        ]
+                        data: [-101, -134, -190, -130, -210]
                     }
                 ]
             })
@@ -425,17 +365,8 @@ export default {
         //     margin: 0 !important;
         // }
         /** ------ elemnt 样式重置： 结束 ------- **/ 
-
-
-
         // background:#020913;
         .data-header{
-            // .title{
-            //     margin-top: 0;
-            //     color: #fff;
-            // }
-            
-
             .link {
                 margin-top: 0;
                 margin-bottom: 16px;
@@ -485,16 +416,10 @@ export default {
             .link--kukuri:hover::before {
                 width: 100%;
             }
-
         }
-        
         .data-content-first{
             padding: 16px 0;
-            // height: 400px;
             color: #333;
-            // display: flex;
-            // justify-content: space-around;
-            // align-items: center;
             background-color: #fff;
             .el-col:first-child{
                 padding-left: 16px !important;
@@ -504,7 +429,6 @@ export default {
                 padding-left: 8px !important;
                 padding-right: 16px !important;
             }
-
             .title{
                 margin:0;
                 padding-left: 20px;
@@ -516,10 +440,6 @@ export default {
                 border-radius: 4px 4px 0 0;
                 background: #03305a;
             }
-            // .border_right{
-            //     background: url(../images/center_line.png) no-repeat right center;
-            //     height: 100%;
-            // }
             .first-left{
                 height: 100%;
                 border:1px solid #0078d5;
@@ -543,16 +463,13 @@ export default {
                             border-left: 1px solid #e5e5e5;
                         }
                     }
-
                     &:nth-child(1){
                         padding-right: 0 !important;
                     }
                     &:nth-child(2){
                         padding-left: 0 !important;
                     }
-                    
                 }
-                
             }
             .first-right{
                 height: 100%;
@@ -565,7 +482,6 @@ export default {
             background: #fff;
             >.el-col{
                 >.grid-content{
-
                     border-radius: 4px;
                 }
             }
