@@ -1,7 +1,7 @@
 <template>
     <div class="home-page">
         <el-container>
-            <el-header>大话西游2周边商城后台管理系统</el-header>
+            <el-header><img src="../images/logo.png">大话西游2周边商城后台管理系统</el-header>
             <el-container>
                 <el-aside width="200px">
                     
@@ -13,7 +13,7 @@
                                 @open="handleOpen"
                                 @close="handleClose"
                                 text-color="#fff"
-                                background-color='#094574'
+                                background-color='rgb(52,73,94)'
                                 active-text-color="#ffd04b"
                                 router>
                                 <el-menu-item index="/home/over-view">
@@ -135,7 +135,7 @@ export default {
             >.el-header, .el-footer {
                 color: #fff;
                 line-height: 60px;
-                background-color: #002b4c;
+                background-color:  rgb(34, 49, 63);
                 &.el-header{
                     text-align:left;
                 }

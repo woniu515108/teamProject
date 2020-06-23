@@ -51,6 +51,13 @@
         <!-- row_one end -->
         <!-- row_two begin -->
         <el-row :gutter="20" class="data-content-sec">
+            <el-col :xs="24" :md="12" :lg="7">
+                <div class="grid-content">
+                    <p class="title">热销商品类型统计</p>
+                    <div id="hotSale" :style="{width: '100%', height: '100%'}"></div>
+                </div>
+            </el-col>
+            
             <el-col :xs="24" :md="12" :lg="5">
                 <div class="grid-content">
                     <p class="title">消费群体</p>
@@ -61,12 +68,6 @@
                 <div class="grid-content">
                     <p class="title">访客来源统计</p>
                     <div id="visitor" :style="{width: '100%', height: '100%'}"></div>
-                </div>
-            </el-col>
-            <el-col :xs="24" :md="12" :lg="7">
-                <div class="grid-content">
-                    <p class="title">热销商品类型统计</p>
-                    <div id="hotSale" :style="{width: '100%', height: '100%'}"></div>
                 </div>
             </el-col>
             <el-col :xs="24" :md="12" :lg="5">
@@ -102,59 +103,82 @@ export default {
         // 销售折线图
         zhexian(){
             let myChart  = this.$echarts.init(document.getElementById('zhexian'));
-            var xAxisData = [];
-            var data1 = [1850000,1478867,2056078,570861,546231,7777081,4687];
-            var data2 = [251670,546781,1154038,5642346,1465795,13300876,554687,1355213,5467954,1020454,19304176,15304876];
-            for (var i = 1; i <=12; i++) {
-                xAxisData.push(i+'月份');
-            }
             myChart.setOption({
+                tooltip: {
+                    trigger: 'axis'
+                },
                 legend: {
-                    data: ['今年', '去年'],
-                    textStyle:{
-                        color:'#333'
-                    }
+                    data: ['今年', '去年']
                 },
                 toolbox: {
-                    // y: 'bottom',
+                    show: true,
                     feature: {
-                        magicType: {
-                            type: ['stack', 'tiled']
+                        dataZoom: {
+                            yAxisIndex: 'none'
                         },
-                        dataView: {},
-                        saveAsImage: {
-                            pixelRatio: 2
-                        }
+                        dataView: {readOnly: false},
+                        magicType: {type: ['line', 'bar']},
+                        restore: {},
+                        saveAsImage: {}
                     }
                 },
-                tooltip: {},
                 xAxis: {
-                    data: xAxisData,
-                    splitLine: {
-                        show: false
-                    }
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月','八月', '九月', '十月', '十一月', '十二月']
                 },
                 yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value} 元'
+                    }
                 },
-                series: [{
-                    name: '今年',
-                    type: 'bar',
-                    data: data1,
-                    animationDelay: function (idx) {
-                        return idx * 10;
+                series: [
+                    {
+                        name: '今年',
+                        type: 'line',
+                        data: [102465, 4578124, 245687, 1542752, 1245751, 235487],
+                        markPoint: {
+                            data: [
+                                {type: 'max', name: '最大值'},
+                                {type: 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine: {
+                            data: [
+                                {type: 'average', name: '平均值'}
+                            ]
+                        }
+                    },
+                    {
+                        name: '去年',
+                        type: 'line',
+                        data: [124574, 5475112, 4251522, 2211554, 8477851, 54521, 2445621, 524574, 7475112, 1451522, 211554, 7477851],
+                        markPoint: {
+                            data: [
+                                {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
+                            ]
+                        },
+                        markLine: {
+                            data: [
+                                {type: 'average', name: '平均值'},
+                                [{
+                                    symbol: 'none',
+                                    x: '90%',
+                                    yAxis: 'max'
+                                }, {
+                                    symbol: 'circle',
+                                    label: {
+                                        position: 'start',
+                                        formatter: '最大值'
+                                    },
+                                    type: 'max',
+                                    name: '最高点'
+                                }]
+                            ]
+                        }
                     }
-                }, {
-                    name: '去年',
-                    type: 'bar',
-                    data: data2,
-                    animationDelay: function (idx) {
-                        return idx * 10 + 100;
-                    }
-                }],
-                animationEasing: 'elasticOut',
-                animationDelayUpdate: function (idx) {
-                    return idx * 5;
-                }
+                ]
             });
         },
         // 消费群体
@@ -222,11 +246,18 @@ export default {
                         radius: '55%',
                         center: ['50%', '60%'],
                         data: [
-                            {value: 335, name: '直接访问'},
-                            {value: 310, name: '邮件营销'},
-                            {value: 234, name: '联盟广告'},
-                            {value: 135, name: '视频广告'},
-                            {value: 1548, name: '搜索引擎'}
+                            {
+                                value: 335, 
+                                name: '直接访问', 
+                                colro: "#fff",
+                                itemStyle: {
+                                    
+                                }
+                            },
+                            {value: 310, name: '邮件营销', colro: "#fff"},
+                            {value: 234, name: '联盟广告', colro: "#fff"},
+                            {value: 135, name: '视频广告', colro: "#fff"},
+                            {value: 1548, name: '搜索引擎',colro: "#fff"}
                         ],
                         emphasis: {
                             itemStyle: {
@@ -234,6 +265,7 @@ export default {
                                 shadowOffsetX: 0,
                                 shadowColor: 'rgba(0, 0, 0, 0.5)'
                             }
+                        
                         }
                     }
                 ]
@@ -438,7 +470,7 @@ export default {
                 line-height: 44px;
                 text-align: left;
                 border-radius: 4px 4px 0 0;
-                background: #03305a;
+                background: rgb(34, 49, 63);
             }
             .first-left{
                 height: 100%;
@@ -493,7 +525,7 @@ export default {
                     margin:0;
                     text-align: left;
                     height: 44px;
-                    background: #03305a;
+                    background: rgb(34, 49, 63);
                     line-height: 44px;
                     font-size: 14px;
                     padding-left: 20px;
