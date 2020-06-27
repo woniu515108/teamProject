@@ -1,7 +1,19 @@
 <template>
     <div class="home-page">
         <el-container>
-            <el-header><img src="../images/logo.png">大话西游2周边商城后台管理系统</el-header>
+            <el-header>
+                <img class="header_logo" src="../images/logo.png">
+                <!-- 头部右侧用户名下拉菜单-bengin -->
+                <el-dropdown>
+                    <span class="el-dropdown-link">
+                    {{userInfo.nickName}}<i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item @click.native="loginOut">退出</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+                <!-- 头部右侧用户名下拉菜单-end -->
+                </el-header>
             <el-container>
                 <el-aside width="200px">
                     
@@ -24,10 +36,16 @@
                                     <i class="el-icon-menu"></i>
                                     <span slot="title">商品管理</span>
                                 </el-menu-item>
-                                <el-menu-item index="/home/user-list">
-                                    <i class="el-icon-document"></i>
-                                    <span slot="title">用户管理</span>
-                                </el-menu-item>                                
+                                <el-submenu index="/home/user-list">
+                                    <template slot="title">
+                                        <i class="el-icon-document"></i>
+                                        <span slot="title">用户管理</span>
+                                    </template>
+                                    <el-menu-item-group>
+                                        <el-menu-item index="1-4-1">管理员用户</el-menu-item>
+                                        <el-menu-item index="1-4-2">前台用户</el-menu-item>
+                                    </el-menu-item-group>
+                                </el-submenu>                                
                             </el-menu>
                         </el-col>
                     </el-row>
@@ -59,15 +77,24 @@ export default {
     data () {
         return {
             isShowBread: true,
-            msg: 'Welcome to Your Vue.js App'
+            userInfo: {}
         }
     },
 
     beforeCreate(){
-        console.log( "beforeCreate() 组件创建前..." );
+        // console.log( "beforeCreate() 组件创建前..." );
     },
     created(){
         console.log("created() 组件创建完成！");
+
+        /**
+         * @description: 
+         */        
+        this.getLocalUserInfo();
+
+        /**
+         * @description: 组件创建完成后获取当前路由
+         */
         this.getNowRouter();
 
 
@@ -75,27 +102,34 @@ export default {
 
     beforeMount(){
         console.log( "beforeMount() 组件挂载前..." );
+
+
+        
     },
     mounted(){
         console.log( "mounted() 组件挂载完成!" );
+
+        
+        
+
     },
 
-    beforeUpdate(){
-        console.log( "beforeUpdate() 组件更新前..." );
-    },
+    // beforeUpdate(){
+    //     console.log( "beforeUpdate() 组件更新前..." );
+    // },
 
     updated() {
         console.log( "updated() 组件更新完成！" );
         this.getNowRouter();
     },
 
-    beforeDestroy(){
-        console.log( "beforeDestroy() 组件销毁前..." );
-    },
+    // beforeDestroy(){
+    //     console.log( "beforeDestroy() 组件销毁前..." );
+    // },
 
-    destroyed(){
-        console.log( "destroyed() 组件销毁完成" );
-    },
+    // destroyed(){
+    //     console.log( "destroyed() 组件销毁完成" );
+    // },
 
 
 
@@ -108,7 +142,7 @@ export default {
          * @by: 
          */      
         getNowRouter(){
-            console.log( this.$route.path );
+            // console.log( this.$route.path );
             if( this.$route.path === '/home/over-view' ){
                 this.isShowBread = false;
             }else{
@@ -116,12 +150,31 @@ export default {
             }
         },
 
+        /**
+         * @description: 获取本地缓存中的数据并赋值到当前组件
+         */  
+        getLocalUserInfo(){
+            let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+            this.userInfo = userInfo;
+        },      
+
         
         handleOpen(key, keyPath) {
-            console.log(key, keyPath);
+            // console.log(key, keyPath);
         },
         handleClose(key, keyPath) {
-            console.log(key, keyPath);
+            // console.log(key, keyPath);
+        },
+
+        /**
+         * @description: 登录退出
+         */
+        loginOut(){
+            console.log('退出登录')
+            
+            sessionStorage.removeItem('userInfo');
+
+            this.$router.replace('/login');
         }
     }
 }
@@ -138,6 +191,11 @@ export default {
                 background-color:  rgb(34, 49, 63);
                 &.el-header{
                     text-align:left;
+                    display: flex;
+                    justify-content: space-between;
+                    .header_logo{
+                        height: 60px;
+                    }
                 }
                 &.el-footer{
                     text-align: center;

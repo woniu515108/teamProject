@@ -10,7 +10,15 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+        '/api':{
+			target: "http://localhost:3300",//'http://192.168.16.104:3300',  // 配置跨域的服务器地址  http://192.168.16.104:3300/xxxxx/xxxxx
+			changeOrigin: true,  // 是否允许跨域
+			pathRewrite: {   // 跨域之后的路径重写
+                '^/api':'', // ^/api 正则匹配 /api开头的路径来重写路径
+			}
+		}
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

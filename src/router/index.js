@@ -2,8 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 // 导入路由组件
-import HelloWorld from '@/components/HelloWorld'
-
 import Login from '@/pages/Login';
 import Home from '@/pages/Home';
 
@@ -23,13 +21,8 @@ Router.prototype.push = function push (location) {
 }
 
 
-export default new Router({
+const router =  new Router({
     routes: [
-        {
-            path: '/hello',
-            name: 'HelloWorld',
-            component: HelloWorld
-        },
         {
             path: '/login',
             name: 'login',
@@ -60,3 +53,36 @@ export default new Router({
         
     ]
 })
+
+// 不需要登陆的组件
+let noLoginPage = [
+    '/login'
+]
+
+router.beforeEach((to,from,next)=>{
+    // console.log( "to===>",to );
+    // console.log( "from===>",from );
+    // console.log( "to===>",to );
+
+ 
+
+    // next()
+    if(noLoginPage.some(item=>item==to.path)){//不需要登陆
+        next();
+
+    }else{ // 需要登陆
+        console.log( sessionStorage.getItem("userInfo") );
+        if( sessionStorage['userInfo'] ){
+            console.log( "已登录" );
+            next();
+        }else{
+            console.log( "未登陆" );
+            next({
+                path:"/login"
+            });
+        }
+    }
+});
+
+
+export default router;

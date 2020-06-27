@@ -58,24 +58,24 @@
                 </div>
             </el-col>
             
-            <el-col :xs="24" :md="12" :lg="5">
+            <el-col :xs="24" :md="12" :lg="9">
                 <div class="grid-content">
                     <p class="title">消费群体</p>
                     <div id="consumer" :style="{width: '100%', height: '100%'}"></div>
                 </div>
             </el-col>
-            <el-col :xs="24" :md="12" :lg="7">
+            <el-col :xs="24" :md="12" :lg="8">
                 <div class="grid-content">
                     <p class="title">访客来源统计</p>
                     <div id="visitor" :style="{width: '100%', height: '100%'}"></div>
                 </div>
             </el-col>
-            <el-col :xs="24" :md="12" :lg="5">
+            <!-- <el-col :xs="24" :md="12" :lg="5">
                 <div class="grid-content">
                     <p class="title">客户反馈类型统计</p>
                     <div id="feedback" :style="{width: '100%', height: '100%'}"></div>
                 </div>
-            </el-col>
+            </el-col> -->
         </el-row>
         <!-- row_two end -->
     </el-row>
@@ -97,7 +97,7 @@ export default {
         this.hotSale();
         this.visitor();
         this.consumer();
-        this.feedback();
+        // this.feedback();
     },
     methods: {
         // 销售折线图
@@ -279,14 +279,14 @@ export default {
                     trigger: 'item',
                     formatter: '{a} <br/>{b} : {c} ({d}%)'
                 },
-                visualMap: {
-                    show: false,
-                    min: 80,
-                    max: 600,
-                    inRange: {
-                        colorLightness: [0, 1]
-                    }
-                },
+                // visualMap: {
+                //     show: false,
+                //     min: 80,
+                //     max: 600,
+                //     inRange: {
+                //         colorLightness: [0, 0.5]
+                //     }
+                // },
                
                 series: [
                     {
@@ -295,15 +295,46 @@ export default {
                         radius: '55%',
                         center: ['50%', '50%'],
                         data: [
-                            {value: 335, name: '家用电器'},
-                            {value: 310, name: '电子产品'},
-                            {value: 274, name: '美妆'},
-                            {value: 235, name: '其他'},
-                            {value: 400, name: '衣服'}
+                            {
+                                value: 335, 
+                                name: '家用电器',
+                                itemStyle: {
+                                    color: '#7efff5'
+                                }
+                            },
+                            {
+                                value: 310, 
+                                name: '电子产品',
+                                itemStyle: {
+                                    color: '#7d5fff'
+                                }
+                            },
+                            {
+                                value: 274, 
+                                name: '美妆',
+                                itemStyle: {
+                                    color: '#fff200'
+                                }
+                            },
+                            {
+                                value: 235, 
+                                name: '其他',
+                                itemStyle: {
+                                    color: '#FEA47F'
+                                }
+                            },
+                            {
+                                value: 400, 
+                                name: '衣服',
+                                itemStyle: {
+                                    color: '#D6A2E8'
+                                }
+                            }
                         ].sort(function (a, b) { return a.value - b.value; }),
                         roseType: 'radius',
                         label: {
-                            color: 'rgba(226, 113, 37, 0.8)'
+                            formatter: '{b}-{d}%',
+                            // color: 'rgba(226, 113, 37, 0.8)'
                         },
                         labelLine: {
                             lineStyle: {
@@ -313,11 +344,11 @@ export default {
                             length: 10,
                             length2: 20
                         },
-                        itemStyle: {
-                            color: '#c23531',
-                            shadowBlur: 200,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        },
+                        // itemStyle: {
+                        //     color: '#c23531',
+                        //     shadowBlur: 200,
+                        //     shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        // },
                         animationType: 'scale',
                         animationEasing: 'elasticOut',
                         animationDelay: function (idx) {
@@ -450,6 +481,8 @@ export default {
             }
         }
         .data-content-first{
+            margin: 0 !important;
+            margin-bottom: 16px !important;
             padding: 16px 0;
             color: #333;
             background-color: #fff;
@@ -474,7 +507,7 @@ export default {
             }
             .first-left{
                 height: 100%;
-                border:1px solid #0078d5;
+                border:1px solid #22313f;
                 border-radius: 4px;
                 .el-col{
                     height: 100%;
@@ -505,12 +538,13 @@ export default {
             }
             .first-right{
                 height: 100%;
-                border:1px solid #0078d5;
+                border:1px solid #22313f;
                 border-radius: 4px;
             }
         }
         .data-content-sec{
-            padding:0 4px 20px;
+            margin: 0 !important;
+            padding:0 4px 16px;
             background: #fff;
             >.el-col{
                 >.grid-content{
@@ -518,7 +552,7 @@ export default {
                 }
             }
             .grid-content{
-                border:1px solid #0078d5;
+                border:1px solid #22313f;
                 height: 536px;
                 margin-top:20px;
                 .title{
