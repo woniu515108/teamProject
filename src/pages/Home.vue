@@ -6,7 +6,8 @@
                 <!-- 头部右侧用户名下拉菜单-bengin -->
                 <el-dropdown>
                     <span class="el-dropdown-link">
-                    {{userInfo.nickName}}<i class="el-icon-arrow-down el-icon--right"></i>
+                        <!-- <img :src="src" alt=""> -->
+                        {{userInfo.nickName}}<i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item @click.native="loginOut">退出</el-dropdown-item>
@@ -77,7 +78,9 @@ export default {
     data () {
         return {
             isShowBread: true,
-            userInfo: {}
+            userInfo: {},
+
+            src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg'
         }
     },
 

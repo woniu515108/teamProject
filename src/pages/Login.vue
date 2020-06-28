@@ -101,6 +101,7 @@
                             console.log
                         }).catch(err=>{
                             console.log( "失败回调：>>>>", err );
+                            this.$message.error(err);
                         })
 
 

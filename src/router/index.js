@@ -8,6 +8,7 @@ import Home from '@/pages/Home';
 import OverView from '@/pages/Overview';
 import ProductList from '@/pages/Product';
 import UserList from '@/pages/UserList';
+import AddProduct from '@/pages/AddProduct';
 
 Vue.use(Router)
 
@@ -47,6 +48,11 @@ const router =  new Router({
                     path: 'user-list',
                     name: 'userList',
                     component: UserList,   
+                },
+                {
+                    path: 'add-product',
+                    name: 'addProduct',
+                    component: AddProduct,   
                 },
             ]
         },
