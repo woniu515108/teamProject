@@ -2,23 +2,41 @@
     <div class="product-list-component">
         <template>
             <el-table
-                :data="tableData"
+                stripe
+                :data="productList"
                 style="width: 100%;text-align:cenrter"
                 :default-sort = "{prop: 'date', order: 'descending'}">
                 <el-table-column
-                    prop="pid"
-                    label="货品编码"
+                    prop="sNum"
+                    label="序号"
                     sortable
                     width='100px'>
                 </el-table-column>
                 <el-table-column
-                    prop="pro_name"
+                    prop="smallPic"
+                    label="图片路径"
+                    sortable
+                    width="180">
+                    <!--插入图片链接的代码-->
+                    <template slot-scope="scope">
+                    <img  :src="scope.row.smallPic" alt="" style="width: 50px;height: 50px">
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    prop="name"
                     label="商品名称">
                 </el-table-column>
                 <el-table-column
-                    prop="brand"
-                    label="品牌"
-                    sortable>
+                    prop="subtitle"
+                    label="副标题">
+                </el-table-column>
+                <el-table-column
+                    prop="firstClassName"
+                    label="一级分类">
+                </el-table-column>
+                <el-table-column
+                    prop="secondClassName"
+                    label="二级分类">
                 </el-table-column>
                 <el-table-column
                     prop="price"
@@ -27,7 +45,11 @@
                     width='100px'>
                 </el-table-column>
                 <el-table-column
-                    prop="isOnSale"
+                    prop="description"
+                    label="商品描述">
+                </el-table-column>
+                <el-table-column
+                    prop="isOnline"
                     label="是否在售"
                     sortable
                     width='100px'>
@@ -42,11 +64,22 @@
                     prop="operation"
                     label="操作">
                      <template slot-scope="scope">
-                        <el-button @click="editProduct(scope.row)" type="text" size="small">编辑</el-button>
-                        <el-button @click="deleteProduct(scope.row)" type="text" size="small">删除</el-button>
+                        <el-button @click="editProduct(scope.row.pid)" type="text" size="small">编辑</el-button>
+                        <el-button @click="deleteProduct(scope.row.pid)" type="text" size="small">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
+            <div class="block">
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-sizes="pageCount"
+                :page-size="currentPageCount"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="total">
+            </el-pagination>
+        </div>
         </template>
     </div>
 </template>
@@ -55,119 +88,118 @@
 export default {
     name: 'productList',
     data() {
-      return {
-        tableData: [
-            {
-                pid: '001',
-                pro_name: '大话西游2短袖T恤-巅峰对决',
-                brand:'安踏',
-                price:'69.99',
-                isOnSale:'是',
-                stock:'10000'
-            },
-            {
-                pid: '003',
-                pro_name: '大话西游2短袖T恤-巅峰对决',
-                brand:'耐克',
-                price:'69.99',
-                isOnSale:'否',
-                stock:'100800'
-            }, 
-            {
-                pid: '002',
-                pro_name: '大话西游2短袖T恤-巅峰对决',
-                brand:'安踏',
-                price:'69.99',
-                isOnSale:'是',
-                stock:'9000'
-            }, 
-            {
-                pid: '008',
-                pro_name: '大话西游2短袖T恤-巅峰对决',
-                brand:'耐克',
-                price:'69.99',
-                isOnSale:'否',
-                stock:'100'
-            }
-        ]
-      }
+        return {
+            total: 10,
+            currentPageCount: 5,
+            currentPage: 1,
+            pageCount: [5, 10, 20, 50],
+            productList: [],      // 商品列表
+
+        }
     },
+
+    mounted(){
+        // 获取商品列表数据
+        this.getProductList(this.currentPage,this.currentPageCount);
+
+    },
+
     methods: {
         /**
-         * 功能： 商品编辑
-         * */ 
-        editProduct( productInfo ){
-            console.log("编辑：>>>>", productInfo);
-
-            const h = this.$createElement;
-            this.$msgbox(
-                {
-                    title: '商品编辑',
-                    message: h('p', null, 
-                        [
-                            h('p', { style: 'color: red', dataId:"001" }, '宝贝'),
-                            h('i', { style: 'color: teal' }, 'VNode')
-                        ]
-                    ),
-                    showCancelButton: true,
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    beforeClose: (action, instance, done) => {
-                        if (action === 'confirm') {
-
-                            instance.confirmButtonLoading = true;
-                            instance.confirmButtonText = '执行中...';
-                            setTimeout(() => {
-                                done();
-                                setTimeout(() => {
-                                    instance.confirmButtonLoading = false;
-                                }, 300);
-                            }, 3000);
-
-                        } else {
-                            
-                            done();
-
-                        }
-                    }
+         * @description: 获取商品列表
+         */        
+        getProductList(currentPage, pageSize){
+            
+            this.$axios.get("/backstage/product/getList",{
+                params:{
+                    currentPage: currentPage,
+                    pageSize: pageSize
+                }
             })
-            .then(action => {
-                this.$message({
-                    type: 'info',
-                    message: 'action: ' + action
-                });
-            });
-        },    
+            .then(res=> {
+
+               
+                const resData = res.data;
+                if( resData.code == 200 ){
+
+                    // 重构返回的商品列表的数据
+                    this.productList = resData.data.list.map((item,idx)=>{
+                        return {
+                            pid: item.pid,
+                            sNum: idx+1,
+                            name: item.name,
+                            firstClassName: item.fistTypeName,
+                            secondClassName: item.secondTypeName,
+                            smallPic: JSON.parse(item.smallPic)[0],
+                            subtitle: item.subtitle,
+                            description: item.description,
+                            price: `￥${item.price}`,
+                            isOnline: item.isOnline ? "已上架" : "已下架",
+                            stock: item.stock
+                        }
+                    });
+
+                    // 重新赋值页码
+                    this.currentPage = parseInt(resData.data.currentPage) || this.currentPage;
+                    this.currentPageCount = parseInt(resData.data.pageSize) || this.currentPageCount;
+
+                }else{
+                    console.log( "xxxxxxx" );
+                }
+
+            })
+            .catch(err=> {
+
+                console.log(err);
+            })
+
+
+        },
 
         /**
-         * 功能：商品删除
-         * */
-        deleteProduct( productInfo ){
-            console.log( "商品删除：", productInfo );
-            console.log( this.tableData );
-            
+         * @description: 改变当前商品显示条数
+         */   
+        handleSizeChange(val) {
 
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                
-                let productList = this.tableData.filter(item=>item.pid!=productInfo.pid);
+            this.getProductList( this.currentPage , val );
 
-                this.tableData = productList;
+        },
 
-                this.$message({
-                    type: 'success',
-                    message: '删除成功!'
-                });
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                });          
-            });
-        }
+        /**
+         * @description: 
+         */   
+        handleCurrentChange(val) {
+            this.getProductList( val , this.currentPageCount );
+        },
+
+        /**
+            * @description: 删除商品
+            * @param {string}  pid 商品id 
+        */  
+        deleteProduct(pid){
+            this.$axios.get('/backstage/product/delete',{
+                params:{
+                    pid:pid
+                }
+            })
+            .then(res=>{
+                if(res.data.code==200){
+
+                    this.$message({
+                        message: res.data.msg,
+                        type: 'success'
+                    });
+
+                    this.getProductList(this.currentPage,this.currentPageCount);
+                }else{
+                    this.$message.error(res.data.msg);
+                }
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        }  
+   
     }
 }
 
