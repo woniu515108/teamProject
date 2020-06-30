@@ -64,7 +64,7 @@
 
 
                     </el-main>
-                    <el-footer>技术支持：我们都对团队&nbsp;&nbsp;&nbsp;&nbsp;地址：广东省广州市天河区天寿大厦三层</el-footer>
+                    <el-footer>技术支持：我们都队团队&nbsp;&nbsp;&nbsp;&nbsp;地址：广东省广州市天河区天寿大厦三层</el-footer>
                 </el-container>
             </el-container>
         </el-container>

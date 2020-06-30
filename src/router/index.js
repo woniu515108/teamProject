@@ -9,6 +9,7 @@ import OverView from '@/pages/Overview';
 import ProductList from '@/pages/Product';
 import UserList from '@/pages/UserList';
 import AddProduct from '@/pages/AddProduct';
+import ForgetPassword from '@/pages/ForgetPassword';
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ const router =  new Router({
             path: '/login',
             name: 'login',
             component: Login
+        },
+        {
+            path: '/forget-password',
+            name: 'forgetPassword',
+            component: ForgetPassword,   
         },
         {
             path: '/home',
@@ -53,7 +59,7 @@ const router =  new Router({
                     path: 'add-product',
                     name: 'addProduct',
                     component: AddProduct,   
-                },
+                }
             ]
         },
         

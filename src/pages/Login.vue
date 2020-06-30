@@ -13,7 +13,7 @@
                 </el-input>
             </el-form-item>
             <!-- 忘记密码 -->
-            <router-link to="/forgetPassword" class="forgetPassword">忘记密码</router-link>
+            <router-link to="/forget-password" class="forgetPassword">忘记密码</router-link>
             <!-- 提交按钮 -->
             <el-form-item>
                 <el-button class="submit" @click="submitForm('loginForm')">立即登录</el-button>
