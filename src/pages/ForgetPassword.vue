@@ -1,5 +1,8 @@
 <template>
     <el-row class="forget-password-component">
+
+        <img src="/public/images/1593537163521.jpg" alt="">
+
         <el-row class="h-header"><img class="header_logo" src="../images/logo.png"><h2>找回密码</h2></el-row>
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="forgetPassword">
             <el-form-item label="电子邮箱" prop="email">
@@ -94,6 +97,11 @@
         }
       };
     },
+    
+    // 改变页面body背景色
+    beforeCreate () {
+        document.querySelector('body').setAttribute('style', 'background-color:#E9EEF3')
+    },
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
@@ -113,15 +121,13 @@
 </script>
 <style scoped lang="less">
     .forget-password-component{
-        width: 50%;
-        background: #E9EEF3;
+        width: 30%;
+        background: #fff;
         margin:100px auto;
-        padding: 10px 20px;
+        padding: 10px 60px;
         .h-header{
-            display: flex;
-            justify-content: flex-start;
             img{
-                width: 30%;
+                width: 50%;
             }
             h2{
                 font-weight: normal;
@@ -129,20 +135,25 @@
                 margin-left: 10%;
             }
         }
-        .codeParent{
-            .el-form-item__content{
-                display: flex;
-                .sendCode{
-                    width: 50%;
-                    text-align: left;
-                    margin-left: 10px;
-                    color: #409EFF;
-                    cursor: pointer;
-                }
-            }
-            .identifyinput{
+        
+    }
+</style>
+<style lang="less">
+.forget-password-component{
+    .codeParent{
+        .el-form-item__content{
+            display: flex;
+            .sendCode{
                 width: 50%;
+                text-align: left;
+                margin-left: 10px;
+                color: #409EFF;
+                cursor: pointer;
             }
         }
+        .identifyinput{
+            width: 50%;
+        }
     }
+}
 </style>

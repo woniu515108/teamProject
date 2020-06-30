@@ -51,7 +51,6 @@
                         </el-col>
                     </el-row>
 
-
                 </el-aside>
                 <el-container>
                     <el-main>
@@ -59,7 +58,7 @@
                             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
                             <el-breadcrumb-item>商品管理</el-breadcrumb-item>
                         </el-breadcrumb>
-
+                        
                         <router-view/>                      
 
 

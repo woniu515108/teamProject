@@ -1,5 +1,11 @@
 <template>
     <div class="product-list-component">
+        <!-- 筛选 pid -->
+        <div class="selectPid">
+            <el-input placeholder="请输入内容" v-model="selectPid" class="input-with-select">
+                <el-button slot="append" icon="el-icon-search" @click="querytableListByPid"></el-button>
+            </el-input>
+        </div>
         <template>
             <el-table
                 stripe
@@ -7,7 +13,7 @@
                 style="width: 100%;text-align:cenrter"
                 :default-sort = "{prop: 'date', order: 'descending'}">
                 <el-table-column
-                    prop="sNum"
+                    prop="pid"
                     label="序号"
                     sortable
                     width='100px'>
@@ -19,7 +25,7 @@
                     width="180">
                     <!--插入图片链接的代码-->
                     <template slot-scope="scope">
-                    <img  :src="scope.row.smallPic" alt="" style="width: 50px;height: 50px">
+                    <img  :src="scope.row.smallPic" alt="" style="width: 80px;height: 80px">
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -51,7 +57,6 @@
                 <el-table-column
                     prop="isOnline"
                     label="是否在售"
-                    sortable
                     width='100px'>
                 </el-table-column>
                 <el-table-column
@@ -89,6 +94,7 @@ export default {
     name: 'productList',
     data() {
         return {
+            selectPid:'',
             total: 10,
             currentPageCount: 5,
             currentPage: 1,
@@ -107,18 +113,19 @@ export default {
     methods: {
         /**
          * @description: 获取商品列表
-         */        
-        getProductList(currentPage, pageSize){
-            
+         * @param {number} currentPage  当前页              必传
+         * @param {number} pageSize     当前页显示的数据量   必传
+         */
+        getProductList(currentPage, pageSize,pid){
             this.$axios.get("/backstage/product/getList",{
                 params:{
-                    currentPage: currentPage,
-                    pageSize: pageSize
+                    tableState:{
+                        currentPage: currentPage,
+                        pageSize: pageSize
+                    }
                 }
             })
             .then(res=> {
-
-               
                 const resData = res.data;
                 if( resData.code == 200 ){
 
@@ -142,6 +149,7 @@ export default {
                     // 重新赋值页码
                     this.currentPage = parseInt(resData.data.currentPage) || this.currentPage;
                     this.currentPageCount = parseInt(resData.data.pageSize) || this.currentPageCount;
+
 
                 }else{
                     console.log( "xxxxxxx" );
@@ -206,6 +214,10 @@ export default {
 </script>
 
 <style scoped lang="less">
+    .selectPid{
+        width: 20%;
+        margin: 15px 0;
+    }
     .mt20{
         margin-top:20px;
     }

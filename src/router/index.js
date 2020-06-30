@@ -68,7 +68,8 @@ const router =  new Router({
 
 // 不需要登陆的组件
 let noLoginPage = [
-    '/login'
+    '/login',
+    '/forget-password'
 ]
 
 router.beforeEach((to,from,next)=>{
