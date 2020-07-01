@@ -195,6 +195,10 @@ export default {
                     text-align:left;
                     display: flex;
                     justify-content: space-between;
+                    .el-dropdown-link{
+                        color: #fc5600;
+                        cursor: pointer;
+                    }
                     .header_logo{
                         height: 60px;
                     }

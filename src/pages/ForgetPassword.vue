@@ -77,6 +77,7 @@
             }
         };
       return {
+        bodyBgImage: 'url(' + require('../images/password_bg.jpg') + ')',
         ruleForm: {
           pass: '',
           checkPass: '',
@@ -99,8 +100,11 @@
     },
     
     // 改变页面body背景色
-    beforeCreate () {
-        document.querySelector('body').setAttribute('style', 'background-color:#E9EEF3')
+    // beforeCreate () {
+    //     document.querySelector('body').setAttribute('style', 'background:url(../images/password_bg.jpg)')
+    // },
+    mounted(){
+      this.setBodyBackGround()
     },
     methods: {
       submitForm(formName) {
@@ -115,6 +119,12 @@
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
+      },
+      setBodyBackGround () {
+            document.body.style.backgroundSize = 'cover'
+            document.body.style.backgroundRepeat = 'no-repeat'
+            document.body.style.overflow = 'hidden'
+            document.body.style.backgroundImage = this.bodyBgImage
       }
     }
   }
@@ -122,7 +132,7 @@
 <style scoped lang="less">
     .forget-password-component{
         width: 30%;
-        background: #fff;
+        background: rgba(255,255,255,.4);
         margin:100px auto;
         padding: 10px 60px;
         .h-header{
@@ -133,6 +143,7 @@
                 font-weight: normal;
                 font-size: 22px;
                 margin-left: 10%;
+                color: #fff;
             }
         }
         
