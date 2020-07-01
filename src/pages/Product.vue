@@ -2,8 +2,8 @@
     <div class="product-list-component">
         <!-- 筛选 pid -->
         <div class="selectPid">
-            <el-input placeholder="请输入内容" v-model="selectPid" class="input-with-select">
-                <el-button slot="append" icon="el-icon-search" @click="querytableListByPid"></el-button>
+            <el-input placeholder="请输入商品编号" v-model="selectPid" class="input-with-select">
+                <el-button slot="append" icon="el-icon-search" @click="querytableListByPid(selectPid)"></el-button>
             </el-input>
         </div>
         <template>
@@ -14,7 +14,7 @@
                 :default-sort = "{prop: 'date', order: 'descending'}">
                 <el-table-column
                     prop="pid"
-                    label="序号"
+                    label="商品编号"
                     sortable
                     width='100px'>
                 </el-table-column>
@@ -112,9 +112,27 @@ export default {
 
     methods: {
         /**
+         * @description: 通过pid查询商品
+         * @param pid 商品编号
+         */
+        querytableListByPid(pid){
+            if(pid!=''){
+                pid = pid.trim();
+                this.getProductList(this.currentPage,this.currentPageCount,pid);
+            }else{
+                this.$message({
+                    message: '请输入商品编号！',
+                    type: 'warning'
+                });
+            }
+         
+        },
+
+        /**
          * @description: 获取商品列表
          * @param {number} currentPage  当前页              必传
          * @param {number} pageSize     当前页显示的数据量   必传
+         * @param {number} pid          商品编号            非必传
          */
         getProductList(currentPage, pageSize,pid){
             this.$axios.get("/backstage/product/getList",{
@@ -122,7 +140,8 @@ export default {
                     tableState:{
                         currentPage: currentPage,
                         pageSize: pageSize
-                    }
+                    },
+                    pid:pid
                 }
             })
             .then(res=> {
@@ -149,6 +168,7 @@ export default {
                     // 重新赋值页码
                     this.currentPage = parseInt(resData.data.currentPage) || this.currentPage;
                     this.currentPageCount = parseInt(resData.data.pageSize) || this.currentPageCount;
+                    this.total = parseInt(resData.data.total) || this.total;
 
 
                 }else{

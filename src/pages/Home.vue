@@ -42,7 +42,7 @@
                                         <i class="el-icon-document"></i>
                                         <span slot="title">用户管理</span>
                                     </template>
-                                    <el-menu-item-group>
+                                    <el-menu-item-group class="management">
                                         <el-menu-item index="1-4-1">管理员用户</el-menu-item>
                                         <el-menu-item index="1-4-2">前台用户</el-menu-item>
                                     </el-menu-item-group>
@@ -210,16 +210,22 @@ export default {
             }
             
             >.el-container{
-                
-                
                 .el-aside{
+                    .management{
+                        overflow: hidden;
+                    }
                     .left-nav {
                         height: 100%;
                         .el-col{
                             height: 100%;
                             .el-menu{
-                                // min-height: calc( 100vh - 60px );
                                 height: 100%;
+                                .el-menu-item{
+                                    text-align: left;
+                                }
+                                .el-submenu{
+                                    text-align: left;
+                                }
                             }
 
                         }
@@ -239,13 +245,17 @@ export default {
             }
 
         }
-
-        
-        .el-aside {
-            color: #333;
-            text-align: center;
-            line-height: 200px;
-        }
+        // .el-aside {
+        //     color: #333;
+        //     // text-align: center;
+        //     line-height: 200px;
+        //     .el-menu-item{
+        //         text-align: left;
+        //         .el-submenu__title{
+        //             text-align: left;
+        //         }
+        //     }
+        // }
         
         .el-main {
             background-color: #E9EEF3;
