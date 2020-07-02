@@ -1,32 +1,31 @@
 <template>
     <el-row class="forget-password-component">
-
-        <img src="/public/images/1593537163521.jpg" alt="">
-
-        <el-row class="h-header"><img class="header_logo" src="../images/logo.png"><h2>找回密码</h2></el-row>
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="forgetPassword">
-            <el-form-item label="电子邮箱" prop="email">
-                <el-input type="email" v-model="ruleForm.email" autocomplete="off" placeholder="请输入您的电子邮箱"></el-input>
-            </el-form-item>
-            <el-form-item label="邮箱验证码" prop="verifycode" class="codeParent">
-                <el-input v-model="ruleForm.verifycode" placeholder="请输入验证码" class="identifyinput"></el-input>
-                <!-- <div class="sendCode">发送验证码</div> -->
-                <div class="right">
-                    <el-button @click="getyzcode(ruleForm)" :disabled="attcode" v-if="showbtn">获取验证码</el-button>
-                    <el-button class="tsbtn" :disabled="true" v-else>{{code_ts}}</el-button>
-                </div>
-            </el-form-item>
-            <el-form-item label="密码" prop="pass">
-                <el-input type="password" v-model="ruleForm.pass" autocomplete="off" placeholder="请输入您的新密码"></el-input>
-            </el-form-item>
-            <el-form-item label="确认密码" prop="checkPass">
-                <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" placeholder="请再次输入您的新密码"></el-input>
-            </el-form-item>
-            <el-row>
-                <el-button class="backToLogin"><router-link to="/">返回登录</router-link></el-button>
-                <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
-            </el-row>
-        </el-form>
+        <div class="findupwd">
+            <img src="/public/images/1593537163521.jpg" alt="">
+            <el-row class="h-header"><img class="header_logo" src="../images/logo.png"><h2>找回密码</h2></el-row>
+            <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="forgetPassword">
+                <el-form-item label="电子邮箱" prop="email">
+                    <el-input type="email" v-model="ruleForm.email" autocomplete="off" placeholder="请输入您的电子邮箱"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱验证码" prop="verifycode" class="codeParent">
+                    <el-input v-model="ruleForm.verifycode" placeholder="请输入验证码" class="identifyinput"></el-input>
+                    <div class="right">
+                        <el-button @click="getyzcode(ruleForm)" :disabled="attcode" v-if="showbtn" class="sendCode">获取验证码</el-button>
+                        <el-button class="tsbtn" :disabled="true" v-else>{{code_ts}}</el-button>
+                    </div>
+                </el-form-item>
+                <el-form-item label="密码" prop="pass">
+                    <el-input type="password" v-model="ruleForm.pass" autocomplete="off" placeholder="请输入您的新密码"></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="checkPass">
+                    <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" placeholder="请再次输入您的新密码"></el-input>
+                </el-form-item>
+                <el-row>
+                    <el-button class="backToLogin"><router-link to="/">返回登录</router-link></el-button>
+                    <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
+                </el-row>
+            </el-form>
+        </div>
     </el-row>
 </template>
 
@@ -89,7 +88,6 @@
         showbtn: true, // 展示获取验证码或倒计时按钮判断
         code_ts: '获取验证码', //倒计时提示文字
         sec: 60 ,             // 倒计时秒数
-        bodyBgImage: 'url(' + require('../images/password_bg.jpg') + ')',
         ruleForm: {
           email:'',
           emailAddress:'',
@@ -146,15 +144,7 @@
           }
         });
       },
-      
 
-      // 设置背景图片
-      setBodyBackGround () {
-        document.body.style.backgroundSize = 'cover'
-        document.body.style.backgroundRepeat = 'no-repeat'
-        document.body.style.overflow = 'hidden'
-        document.body.style.backgroundImage = this.bodyBgImage
-      },
       // 发送验证码倒计时
       getyzcode () {
         console.log(this.ruleForm.email)
@@ -197,43 +187,61 @@
 </script>
 <style scoped lang="less">
     .forget-password-component{
-        width: 30%;
-        background: rgba(255,255,255,.4);
-        margin:100px auto;
-        padding: 10px 60px 30px 40px;
-        .el-form-item__label{
-          text-align: left;
-        }
-        .h-header{
-            img{
-                width: 50%;
+        width: 100%;
+        height: 100%;
+        background: url(../images/zc_bg.jpg) no-repeat;
+        background-size: 100% 100%;
+        position: absolute;
+        overflow: auto;
+        .findupwd{
+            width: 500px;
+            height: 530px;
+            background: rgba(255,255,255,.2);
+            padding: 30px 60px 50px 40px;
+            position: absolute;
+            left: 50%;
+            top:50%;
+            margin-left: -270px;
+            margin-top: -285px;
+            .h-header{
+                position: relative;
+                img{
+                    width: 80%;
+                    // position: absolute;
+                    // top:-100px;
+                }
+                h2{
+                    font-weight: normal;
+                    font-size: 22px;
+                    margin-left: 10%;
+                    color: #fff;
+                }
             }
-            h2{
-                font-weight: normal;
-                font-size: 22px;
-                margin-left: 10%;
-                color: #fff;
+            .backToLogin{
+                a{
+                    text-decoration: none;
+                    color: #409EFF;
+                }
             }
-        }
-        .backToLogin{
-          a{
-            text-decoration: none;
-            color: #409EFF;
-          }
-        }
-        
+       } 
     }
 </style>
 <style lang="less">
 .forget-password-component{
+    .el-form-item__label{
+                text-align: left;
+                color: #fff;
+            }
     .codeParent{
         .el-form-item__content{
             display: flex;
             .sendCode{
-                width: 22%;
+                // width: 22%;
                 text-align: right;
                 margin-left: 10px;
-                color: #409EFF;
+                background: #409EFF;
+                border:none;
+                color: #fff;
                 cursor: pointer;
             }
         }
