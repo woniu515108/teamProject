@@ -3,8 +3,8 @@
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="add-ruleForm">
             <el-form-item label="一级分类" prop="region">
                 <el-select v-model="ruleForm.region" placeholder="请选择分类">
-                <el-option label="服装配饰" value="fuzhuang"></el-option>
-                <el-option label="家居用品" value="jiaju"></el-option>
+                  <el-option label="服装配饰" value="fuzhuang"></el-option>
+                  <el-option label="家居用品" value="jiaju"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="二级分类" prop="region_sec">
@@ -28,6 +28,52 @@
             <el-form-item label="是否在售" prop="delivery">
                 <el-switch v-model="sale" active-text="是" inactive-text="否"></el-switch>
             </el-form-item>
+            <!-- 商品缩略图-begin -->
+            <el-form-item label="商品缩略图" prop="ProductThumbnail">
+                <el-upload action="#" :limit="1" list-type="picture-card" :before-remove="beforeRemove" :auto-upload="false">
+                    <i slot="default" class="el-icon-plus"></i>
+                    <div slot="file" slot-scope="{file}">
+                      <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" >
+                      <span class="el-upload-list__item-actions">
+                        <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+                        <i class="el-icon-zoom-in"></i>
+                        </span>
+                        <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleDownload(file)">
+                          <i class="el-icon-download"></i>
+                        </span>
+                        <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)">
+                          <i class="el-icon-delete"></i>
+                        </span>
+                      </span>
+                    </div>
+                </el-upload>
+                <el-dialog :visible.sync="dialogVisible">
+                  <img width="100%" :src="dialogImageUrl" alt="">
+                </el-dialog>
+            </el-form-item>
+            <!-- 商品缩略图-end -->
+
+            <!-- 商品展示图-begin -->
+            <el-form-item label="商品展示图" prop="CommodityShow">
+              <el-upload class="upload-demo" drag :limit="4" :before-remove="beforeRemove" action="https://jsonplaceholder.typicode.com/posts/" multiple>
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div class="el-upload__tip" slot="tip">请上传至少1张，最多4张图片</div>
+                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+              </el-upload>
+            </el-form-item>
+            <!-- 商品展示图-end -->
+
+            <!-- 商品详情图-begin -->
+            <el-form-item label="商品详情图" prop="CommodityDetail">
+              <el-upload class="upload-demo" drag :limit="12" :before-remove="beforeRemove" action="https://jsonplaceholder.typicode.com/posts/" multiple>
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div class="el-upload__tip" slot="tip">请上传至少1张，最多12张图片</div>
+                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+              </el-upload>
+            </el-form-item>
+            <!-- 商品详情图-end -->
             <el-form-item label="活动标签" >
                 <el-tag :key="tag" v-for="tag in dynamicTags" closable :disable-transitions="false" @close="handleClose(tag)">
                     {{tag}}
@@ -42,7 +88,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
-                <el-button @click="resetForm('ruleForm')">取消</el-button>
+                <el-button class="backToPro"><router-link to="/home/product-list">返回</router-link></el-button>
             </el-form-item>
         </el-form>
     </el-row>
@@ -52,6 +98,10 @@
   export default {
     data() {
       return {
+        // 缩略图
+        dialogImageUrl: '',
+        dialogVisible: false,
+        disabled: false,
         num: 1,
         price:1,
         sale:true,
@@ -89,11 +139,36 @@
           ],
           desc: [
             { required: true, message: '请填写商品描述', trigger: 'blur' }
-          ]
+          ],
+          ProductThumbnail:[
+            {required: true}
+          ],
+          CommodityShow:[
+            {required: true}
+          ],
+          CommodityDetail:[
+            {required: true}
+          ],
         }
       };
     },
     methods: {
+      // 获取一级商品分类
+      
+      // 商品缩略图
+      handleRemove(file) {
+        console.log(file);
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
+      handleDownload(file) {
+        console.log(file);
+      },
+      beforeRemove(file, fileList) {
+        return this.$confirm(`确定移除 ${ file.name }？`);
+      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -103,9 +178,6 @@
             return false;
           }
         });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
       },
       handleClose(tag) {
         this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
@@ -174,6 +246,18 @@
                 width: 90px;
                 margin-left: 10px;
                 vertical-align: bottom;
+            }
+            .backToPro{
+              a{
+                text-decoration: none;
+                color: #409EFF;
+              }
+            }
+            .el-upload__tip{
+              line-height: 20px;
+              text-align: left;
+              margin-top: 0;
+              color: #999;
             }
         }
     }

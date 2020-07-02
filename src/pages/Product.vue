@@ -5,6 +5,7 @@
             <el-input placeholder="请输入商品编号" v-model="selectPid" class="input-with-select">
                 <el-button slot="append" icon="el-icon-search" @click="querytableListByPid(selectPid)"></el-button>
             </el-input>
+            <el-button type="primary" class="addPro"><router-link to="/home/add-product">添加商品</router-link></el-button>
         </div>
         <template>
             <el-table
@@ -107,7 +108,6 @@ export default {
     mounted(){
         // 获取商品列表数据
         this.getProductList(this.currentPage,this.currentPageCount);
-
     },
 
     methods: {
@@ -235,8 +235,18 @@ export default {
 
 <style scoped lang="less">
     .selectPid{
-        width: 20%;
+        display: flex;
         margin: 15px 0;
+        justify-content: space-between;
+        .input-with-select{
+            width: 20%;
+        }
+        .addPro{
+            a{
+                text-decoration: none;
+                color: #fff;
+            }
+        }
     }
     .mt20{
         margin-top:20px;
