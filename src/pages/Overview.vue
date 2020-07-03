@@ -16,7 +16,15 @@
                                     <div class="grid-content left">
                                         <div class="order_num">
                                             <p class="subTitle">下单数量</p>
-                                            <div class="order_con">{{order_num}}</div>
+                                            <div class="order_con">
+                                                <animate-number
+                                                    from="1" 
+                                                    to="3468725" 
+                                                    duration="3000" 
+                                                    easing="easeOutQuad"
+                                                    :formatter="formatter"
+                                                    ></animate-number>
+                                            </div>
                                         </div>
                                     </div>
                                 </el-col>
@@ -25,7 +33,13 @@
                                         <div class="grid-content">
                                         <div class="order_num">
                                             <p class="subTitle">销售金额</p>
-                                            <div class="order_con">{{order_money}}</div>
+                                            <div class="order_con"><animate-number
+                                                    from="1" 
+                                                    to="58467827.97" 
+                                                    duration="3000" 
+                                                    easing="easeOutQuad"
+                                                    :formatter="formatter"
+                                                    ></animate-number></div>
                                         </div>
                                     </div>
                                     </div>
@@ -87,11 +101,16 @@ export default {
     data () {
         return {
             msg: 'Welcome to Your Vue.js App',
-            order_num:'999',
-            order_money:'19999'
+            // order_num:'999',
+            // order_money:'19999'
         }
     },
-
+    beforeCreate () {
+        document.querySelector('.el-main').setAttribute('style', 'background-color:#0c0e18')
+    },
+    beforeDestroy () {
+        document.querySelector('.el-main').removeAttribute('style')
+    },
     mounted(){
         this.zhexian();
         this.hotSale();
@@ -100,15 +119,23 @@ export default {
         // this.feedback();
     },
     methods: {
+        // 销售金额滚动
+        formatter: function (num) {
+            return num.toFixed(2)
+        },
         // 销售折线图
         zhexian(){
             let myChart  = this.$echarts.init(document.getElementById('zhexian'));
             myChart.setOption({
                 tooltip: {
-                    trigger: 'axis'
+                    trigger: 'axis',
                 },
+                
                 legend: {
-                    data: ['今年', '去年']
+                    data: ['今年', '去年'],
+                    textStyle:{
+                        color:'#fff'
+                    },
                 },
                 toolbox: {
                     show: true,
@@ -194,7 +221,7 @@ export default {
                 legend: {
                     data: ['男性', '女性'],
                     textStyle:{
-                        color:'#333'
+                        color:'#fff'
                     }
                 },
                 grid: {
@@ -429,6 +456,15 @@ export default {
         // }
         /** ------ elemnt 样式重置： 结束 ------- **/ 
         // background:#020913;
+        .subTitle{
+            font-size: 30px;
+            color: #fca637;
+            text-shadow: 1px 0px 2px  #fff;
+        }
+        .order_con{
+            color: #fff;
+            font-size: 28px;
+        }
         .data-header{
             .link {
                 margin-top: 0;
@@ -485,7 +521,7 @@ export default {
             margin-bottom: 16px !important;
             padding: 16px 0;
             color: #333;
-            background-color: #fff;
+            background-color: #0c0e18;
             .el-col:first-child{
                 padding-left: 16px !important;
                 padding-right: 8px !important;
@@ -507,7 +543,7 @@ export default {
             }
             .first-left{
                 height: 100%;
-                border:1px solid #22313f;
+                border:1px solid #fff;
                 border-radius: 4px;
                 .el-col{
                     height: 100%;
@@ -538,21 +574,21 @@ export default {
             }
             .first-right{
                 height: 100%;
-                border:1px solid #22313f;
+                border:1px solid #fff;
                 border-radius: 4px;
             }
         }
         .data-content-sec{
             margin: 0 !important;
             padding:0 4px 16px;
-            background: #fff;
+            background: #0c0e18;
             >.el-col{
                 >.grid-content{
                     border-radius: 4px;
                 }
             }
             .grid-content{
-                border:1px solid #22313f;
+                border:1px solid #fff;
                 height: 536px;
                 margin-top:20px;
                 .title{

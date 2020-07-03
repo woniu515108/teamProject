@@ -8,9 +8,9 @@ import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
 import axios from './http';
+import VueAnimateNumber from 'vue-animate-number'
 Vue.prototype.$axios = axios;
-
-
+Vue.use(VueAnimateNumber)
 Vue.use(Element)
 
 import echarts from 'echarts'

@@ -43,8 +43,8 @@
                                         <span slot="title">用户管理</span>
                                     </template>
                                     <el-menu-item-group class="management">
-                                        <el-menu-item index="1-4-1">管理员用户</el-menu-item>
-                                        <el-menu-item index="1-4-2">前台用户</el-menu-item>
+                                        <el-menu-item index="/home/administrators">管理员用户</el-menu-item>
+                                        <el-menu-item index="/home/user">前台用户</el-menu-item>
                                     </el-menu-item-group>
                                 </el-submenu>                                
                             </el-menu>
@@ -83,9 +83,11 @@ export default {
         }
     },
 
-    beforeCreate(){
-        // console.log( "beforeCreate() 组件创建前..." );
-    },
+    beforeCreate () {
+
+  
+
+}, 
     created(){
         console.log("created() 组件创建完成！");
 

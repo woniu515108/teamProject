@@ -2,7 +2,7 @@
     <el-row class="forget-password-component">
         <div class="findupwd">
             <img src="/public/images/1593537163521.jpg" alt="">
-            <el-row class="h-header"><img class="header_logo" src="../images/logo.png"><h2>找回密码</h2></el-row>
+            <el-row class="h-header"><img class="header_logo" src="../images/logo_forget.png"><h2>找回密码</h2></el-row>
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="forgetPassword">
                 <el-form-item label="电子邮箱" prop="email">
                     <el-input type="email" v-model="ruleForm.email" autocomplete="off" placeholder="请输入您的电子邮箱"></el-input>
@@ -31,6 +31,7 @@
 
 <script>
   export default {
+    name:'forgetPassword',
     data() {
         // 邮箱验证
         var checkEmail = (rule, value, callback) => {
@@ -112,7 +113,8 @@
       };
     },
     mounted(){
-      this.setBodyBackGround()
+      console.log('................................');
+      console.log(this.attcode)
     },
     methods: {
       submitForm(formName) {
@@ -235,14 +237,12 @@
     .codeParent{
         .el-form-item__content{
             display: flex;
-            .sendCode{
-                // width: 22%;
+            .tsbtn,.sendCode{
                 text-align: right;
                 margin-left: 10px;
                 background: #409EFF;
                 border:none;
                 color: #fff;
-                cursor: pointer;
             }
         }
         .identifyinput{

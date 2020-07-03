@@ -10,6 +10,8 @@ import ProductList from '@/pages/Product';
 import UserList from '@/pages/UserList';
 import AddProduct from '@/pages/AddProduct';
 import ForgetPassword from '@/pages/ForgetPassword';
+import Administrators from '@/pages/Administrators';
+import User from '@/pages/User';
 
 Vue.use(Router)
 
@@ -53,7 +55,17 @@ const router =  new Router({
                 {
                     path: 'user-list',
                     name: 'userList',
-                    component: UserList,   
+                    component: UserList,
+                },
+                {
+                    path: 'administrators',
+                    name: 'Administrators',
+                    component: Administrators,   
+                },
+                {
+                    path: 'user',
+                    name: 'User',
+                    component: User,   
                 },
                 {
                     path: 'add-product',
