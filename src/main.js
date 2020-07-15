@@ -13,6 +13,8 @@ Vue.prototype.$axios = axios;
 Vue.use(VueAnimateNumber)
 Vue.use(Element)
 
+// Vue.use(Loading);
+
 import echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 
@@ -20,10 +22,10 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
+    el: '#app',
+    router,
+    components: { App },
+    template: '<App/>'
 })
 
 

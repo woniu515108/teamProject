@@ -73,7 +73,7 @@
              */ 
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
-                    console.log( valid );
+                    // console.log( valid );
                     if (valid) {
                         const { username, password } = this.loginForm;
 
@@ -81,45 +81,29 @@
                             username,
                             password
                         }).then(res=>{
+
                             // console.log( "成功回调：>>>>" ,res);
-                            let succ=res.data;
-                            console.log( succ );
-                            if(succ.code=='200'){
+                            // console.log( succ );
+                            if(res.code=='200'){
                                 this.$message({
                                     message: '登录成功',
                                     type: 'success'
                                 });
+
                                 // 将用户信息放在seesionStorage
-                                sessionStorage.setItem('userInfo', JSON.stringify(succ.data));
+                                sessionStorage.setItem('userInfo', JSON.stringify(res.data));
 
                                 // 路由跳转
-                                this.$router.replace('/home/over-view');
+                                this.$router.replace('/home');
                                 
                             }else{
-                                this.$message.error(succ.msg);
+                                this.$message.error(res.msg);
                             }
-                            console.log
+                            // console.log
                         }).catch(err=>{
-                            console.log( "失败回调：>>>>", err );
+                            // console.log( "失败回调：>>>>", err );
                             this.$message.error(err);
                         })
-
-
-                        // console.log( username , password );
-
-                        // const data = {
-                        //     code: 200,
-                        //     msg: "登录成功"
-                        // }
-
-                        // if( data.code == 200 ){
-                        //     this.$message({
-                        //         message: '登录成功！',
-                        //         type: 'success'
-                        //     }); 
-
-                        //     this.$router.replace('/home/over-view')
-                        // }
 
 
                     }

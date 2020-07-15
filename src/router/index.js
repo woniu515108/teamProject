@@ -1,18 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// 导入路由组件
-import Login from '@/pages/Login';
-import Home from '@/pages/Home';
-
-import OverView from '@/pages/Overview';
-import ProductList from '@/pages/Product';
-import UserList from '@/pages/UserList';
-import AddProduct from '@/pages/AddProduct';
-import ForgetPassword from '@/pages/ForgetPassword';
-import Administrators from '@/pages/Administrators';
-import User from '@/pages/User';
-
 Vue.use(Router)
 
 /**
@@ -27,81 +15,99 @@ Router.prototype.push = function push (location) {
 
 const router =  new Router({
     routes: [
-        {
+        {   // 根路由重定向
+              path: '/',
+              redirect : "/login",
+              component: e => import('@/pages/Login')
+        },
+        {   // 登陆页
             path: '/login',
             name: 'login',
-            component: Login
+            component: e => import('@/pages/Login')
         },
-        {
+        {   // 修改密码页
             path: '/forget-password',
             name: 'forgetPassword',
-            component: ForgetPassword,   
+            component: e => import('@/pages/ForgetPassword'),
         },
         {
             path: '/home',
             name: 'home',
-            component: Home,
+            redirect: '/home/over-view',
+            component: e => import('@/pages/Home'),
             children: [
                 {
                     path: 'over-view',
                     name: 'overView',
-                    component: OverView,   
+                    component: e => import('@/pages/home/Overview'),
                 },
                 {
-                    path: 'product-list',
-                    name: 'productList',
-                    component: ProductList,   
+                    path: 'product-manager',
+                    name: 'productManager',
+                    redirect: "/home/product-manager/product-list",
+                    component: e => import('@/pages/home/product/Product-manager'),
+                    children: [
+                        {
+                            path: 'product-list',
+                            name: 'productList',
+                            component: e => import('@/pages/home/product/ProductList'),    
+                        },
+                        {
+                            path: 'product-add',
+                            name: 'productAdd',
+                            component: e => import('@/pages/home/product/productAdd'),      
+                        }
+                    ]
+                       
                 },
                 {
-                    path: 'user-list',
-                    name: 'userList',
-                    component: UserList,
+                    path: 'user-manager',
+                    name: 'userManager',
+                    component: e => import('@/pages/home/user/user-manager'),
+                    children: [
+                        {
+                            path: 'admin-list',
+                            name: 'adminList',
+                            component: e => import('@/pages/home/user/admin/Admin-list'),
+                        },
+                        {
+                            path: 'client-list',
+                            name: 'ClientList',
+                            component: e => import('@/pages/home/user/client/Client-list'),
+                        }
+                    ]
+
                 },
-                {
-                    path: 'administrators',
-                    name: 'Administrators',
-                    component: Administrators,   
-                },
-                {
-                    path: 'user',
-                    name: 'User',
-                    component: User,   
-                },
-                {
-                    path: 'add-product',
-                    name: 'addProduct',
-                    component: AddProduct,   
-                }
+
             ]
         },
-        
+        { // 未创建路由重定向
+            path:'*',
+            redirect:'/'
+        }
     ]
 })
 
 // 不需要登陆的组件
 let noLoginPage = [
+    '/',
     '/login',
     '/forget-password'
 ]
 
 router.beforeEach((to,from,next)=>{
-    // console.log( "to===>",to );
-    // console.log( "from===>",from );
-    // console.log( "to===>",to );
-
- 
 
     // next()
     if(noLoginPage.some(item=>item==to.path)){//不需要登陆
         next();
 
     }else{ // 需要登陆
-        console.log( sessionStorage.getItem("userInfo") );
+        // console.log( sessionStorage.getItem("userInfo") );
         if( sessionStorage['userInfo'] ){
-            console.log( "已登录" );
+            // console.log( "已登录" );
             next();
         }else{
-            console.log( "未登陆" );
+            // console.log( "未登陆" );
             next({
                 path:"/login"
             });

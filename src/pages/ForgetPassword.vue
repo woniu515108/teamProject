@@ -83,117 +83,159 @@
             callback();
             }
         };
-      return {
-        email:'',
-        attcode: true,  //点击获取验证码按钮判断
-        showbtn: true, // 展示获取验证码或倒计时按钮判断
-        code_ts: '获取验证码', //倒计时提示文字
-        sec: 60 ,             // 倒计时秒数
-        ruleForm: {
-          email:'',
-          emailAddress:'',
-          pass: '',
-          checkPass: '',
-        },
+        return {
+            attcode: true,          //点击获取验证码按钮判断
+            showbtn: true,          // 展示获取验证码或倒计时按钮判断
+            code_ts: '获取验证码',  //倒计时提示文字
+            sec: 60 ,               // 倒计时秒数
+            ruleForm: {
+                email:'',
+                verifycode: '',
+                pass: '',
+                checkPass: ''
+            },
 
-        rules: {
-          pass: [
-            { validator: validatePass, trigger: 'blur',required: true }
-          ],
-          checkPass: [
-            { validator: validatePass2, trigger: 'blur',required: true }
-          ],
-          email: [
-            { validator: checkEmail, trigger: 'blur', required: true }
-          ],
-          verifycode: [
-            { validator: verifycode, trigger: 'blur', required: true }
-          ]
-        }
-      };
+            IDcode: "", // 邮箱校验码
+
+            rules: {
+                email: [
+                    { validator: checkEmail, trigger: 'blur', required: true }
+                ],
+                verifycode: [
+                    { validator: verifycode, trigger: 'blur', required: true }
+                ],
+                pass: [
+                    { validator: validatePass, trigger: 'blur',required: true }
+                ],
+                checkPass: [
+                    { validator: validatePass2, trigger: 'blur',required: true }
+                ],
+            }
+        };
     },
     mounted(){
-      console.log('................................');
-      console.log(this.attcode)
+    //   console.log('................................');
+    //   console.log(this.attcode)
     },
+
     methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            // 请求找回密码接口
-            let url='/backstage/user/login';        // ----------------------------------这里差一个提交的接口
-            let ruleForm=ruleForm;
-            this.$axios.post(url,ruleForm)
-            .then(res=>{
-              var succ=res.data;
-              console.log(succ);
-              if(succ.code==200){
-                console.log('成功修改密码');
-                // 将用户信息放在seesionStorage
-                sessionStorage.setItem('passwordInfo', JSON.stringify(succ.data));
+        submitForm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    // 请求找回密码接口
 
-                // 路由跳转至登录页
-                this.$router.replace('/');
-              }else{
-                console.log(succ.msg)
-              }
-            }).catch(err=>{
-              console.log('重置失败',err)
+                    console.log( "通过校验：==>",  this.ruleForm);
+                    let { email, verifycode, pass} = this.ruleForm;
+                    let IDcode = this.IDcode;
+
+                    
+
+                    this.$axios.post('/backstage/user/recoverPwd', {
+                        emailAddress: email,
+                        IDcode: IDcode,
+                        code: verifycode,
+                        newPwd: pass
+                    })
+                    .then(res=>{
+                        console.log( "重置密码===>", res );
+                        if( res.code == '200' ){
+                            this.$message({
+                                showClose: true,
+                                message: '修改成功！',
+                                type: 'success'
+                            });
+
+                            // 路由跳转至登录页
+                            this.$router.replace('/');
+                        }else{
+                            this.$message({
+                                showClose: true,
+                                message: `${err}`,
+                                type: 'error'
+                            });
+                        }
+                        // var succ=res.data;
+                        // console.log(succ);
+                        // if(succ.code==200){
+                        //     console.log('成功修改密码');
+                        //     // 将用户信息放在seesionStorage
+                        //     sessionStorage.setItem('passwordInfo', JSON.stringify(succ.data));
+
+                        //     // 路由跳转至登录页
+                        //     this.$router.replace('/');
+                        // }else{
+                        //     console.log(succ.msg)
+                        // }
+                    })
+                    .catch(err=>{
+                        console.log('重置失败',err)
+                    })
+                }
+            });
+        },
+
+        // 发送验证码倒计时
+        getyzcode () {
+            console.log(this.ruleForm.email)
+
+            // 请求验证码接口
+            const {email}=this.ruleForm;
+
+            console.log( "email:===", email );
+
+            this.$axios.get('/common/email/getCodeForEdit',{
+                params:{
+                    emailAddress: email
+                }
             })
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
+            .then(res=>{
 
-      // 发送验证码倒计时
-      getyzcode () {
-        console.log(this.ruleForm.email)
-        // 请求验证码接口
-        const {email}=this.ruleForm;
-        this.$axios({
-          methods:'get',
-          url:'/common/email/getCode',
-          params:{
-            emailAddress:this.ruleForm.email
-          }
-        })
-        .then(res=>{
-          let succ=res.data;
-          console.log( succ );
-          if(succ.code==200){
-            console.log('发送成功')
-          }else{
-            console.log('邮箱有误')
-          }
-        }).catch(err=>{
-            console.log( "失败回调：>>>>", err );
-            this.$message.error(err);
-        })
-        // 发送验证码有效期倒计时
-        var timer = setInterval(() => {
-            this.sec = this.sec-1
-            this.code_ts = this.sec + 'S后重试'
-            this.showbtn = false
-            if (this.sec === 0) {
-                clearInterval(timer)
-                this.sec = 60
+                console.log("获取邮箱验证码回调==>", res);
+                if(res.code==200){
+                    this.$message({
+                        showClose: true,
+                        message: '邮件发送成功,请注意查收！',
+                        type: 'success'
+                    });
+
+                    this.IDcode = res.data.IDCode;
+                }else{
+                    this.$message({
+                        showClose: true,
+                        message: res.msg,
+                        type: 'error'
+                    })
+                }
+            }).catch(err=>{
+                console.log( "失败回调：>>>>", err );
+                this.$message.error(err);
+            });
+
+            // 发送验证码有效期倒计时
+            var timer = setInterval(() => {
+                this.sec = this.sec-1
                 this.code_ts = this.sec + 'S后重试'
-                this.showbtn = true
-            }
-        }, 1000)
-      }
+                this.showbtn = false
+                if (this.sec === 0) {
+                    clearInterval(timer)
+                    this.sec = 60
+                    this.code_ts = this.sec + 'S后重试'
+                    this.showbtn = true
+                }
+            }, 1000)
+        }
     }
   }
 </script>
 <style scoped lang="less">
     .forget-password-component{
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        height: 100%;
+        height: 100vh;
         background: url(../images/zc_bg.jpg) no-repeat;
         background-size: 100% 100%;
-        position: absolute;
         overflow: auto;
         .findupwd{
             width: 500px;

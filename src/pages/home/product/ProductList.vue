@@ -5,7 +5,9 @@
             <el-input placeholder="请输入商品编号" v-model="selectPid" class="input-with-select">
                 <el-button slot="append" icon="el-icon-search" @click="querytableListByPid(selectPid)"></el-button>
             </el-input>
-            <el-button type="primary" class="addPro"><router-link to="/home/add-product">添加商品</router-link></el-button>
+            <el-button type="primary" class="addPro">
+                <router-link to="/home/product-manager/product-add">添加商品</router-link>
+            </el-button>
         </div>
         <template>
             <el-table
@@ -21,12 +23,12 @@
                 </el-table-column>
                 <el-table-column
                     prop="smallPic"
-                    label="图片路径"
+                    label="缩略图"
                     sortable
                     width="180">
                     <!--插入图片链接的代码-->
                     <template slot-scope="scope">
-                    <img  :src="scope.row.smallPic" alt="" style="width: 80px;height: 80px">
+                        <img  :src="scope.row.smallPic" alt="" style="width: 80px;height: 80px">
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -111,23 +113,7 @@ export default {
     },
 
     methods: {
-        /**
-         * @description: 通过pid查询商品
-         * @param pid 商品编号
-         */
-        querytableListByPid(pid){
-            if(pid!=''){
-                pid = pid.trim();
-                this.getProductList(this.currentPage,this.currentPageCount,pid);
-            }else{
-                this.$message({
-                    message: '请输入商品编号！',
-                    type: 'warning'
-                });
-            }
-         
-        },
-
+        
         /**
          * @description: 获取商品列表
          * @param {number} currentPage  当前页              必传
@@ -145,11 +131,11 @@ export default {
                 }
             })
             .then(res=> {
-                const resData = res.data;
-                if( resData.code == 200 ){
-
+                console.log( "响应：>>>" , res );
+                if( res.code == 200 ){
+                    
                     // 重构返回的商品列表的数据
-                    this.productList = resData.data.list.map((item,idx)=>{
+                    this.productList = res.data.list.map((item,idx)=>{
                         return {
                             pid: item.pid,
                             sNum: idx+1,
@@ -166,24 +152,41 @@ export default {
                     });
 
                     // 重新赋值页码
-                    this.currentPage = parseInt(resData.data.currentPage) || this.currentPage;
-                    this.currentPageCount = parseInt(resData.data.pageSize) || this.currentPageCount;
-                    this.total = parseInt(resData.data.total) || this.total;
+                    this.currentPage = parseInt(res.data.currentPage);
+                    this.currentPageCount = parseInt(res.data.pageSize);
+                    this.total = parseInt(res.data.total);
 
 
                 }else{
-                    console.log( "xxxxxxx" );
+                    this.$message.error("列表数据获取失败！");
                 }
 
             })
             .catch(err=> {
-
+                
                 console.log(err);
             })
 
 
         },
 
+        /**
+         * @description: 通过pid查询商品
+         * @param pid 商品编号
+         */
+        querytableListByPid(pid){
+            if(pid!=''){
+                pid = pid.trim();
+                this.getProductList(this.currentPage,this.currentPageCount,pid);
+            }else{
+                this.$message({
+                    message: '请输入商品编号！',
+                    type: 'warning'
+                });
+            }
+            
+        },
+        
         /**
          * @description: 改变当前商品显示条数
          */   
@@ -211,18 +214,19 @@ export default {
                 }
             })
             .then(res=>{
-                if(res.data.code==200){
+                console.log(  res);
+                if(res.code==200){
 
-                    this.$message({
-                        message: res.data.msg,
-                        type: 'success'
-                    });
+                    this.$message({
+                        message: res.msg,
+                        type: 'success'
+                    });
 
-                    this.getProductList(this.currentPage,this.currentPageCount);
-                }else{
-                    this.$message.error(res.data.msg);
-                }
-            })
+                    this.getProductList(this.currentPage,this.currentPageCount);
+                }else{
+                    this.$message.error(res.msg);
+                }
+            })
             .catch(err=>{
                 console.log(err)
             })

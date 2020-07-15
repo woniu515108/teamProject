@@ -19,7 +19,7 @@
                                             <div class="order_con">
                                                 <animate-number
                                                     from="1" 
-                                                    to="3468725" 
+                                                    to="8725" 
                                                     duration="3000" 
                                                     easing="easeOutQuad"
                                                     :formatter="formatter"
@@ -32,10 +32,10 @@
                                     <div class="grid-content right">
                                         <div class="grid-content">
                                         <div class="order_num">
-                                            <p class="subTitle">销售金额</p>
+                                            <p class="subTitle">销售金额(￥)</p>
                                             <div class="order_con"><animate-number
                                                     from="1" 
-                                                    to="58467827.97" 
+                                                    to="467827.97" 
                                                     duration="3000" 
                                                     easing="easeOutQuad"
                                                     :formatter="formatter"
@@ -68,20 +68,21 @@
             <el-col :xs="24" :md="12" :lg="7">
                 <div class="grid-content">
                     <p class="title">热销商品类型统计</p>
-                    <div id="hotSale" :style="{width: '100%', height: '100%'}"></div>
+                    <div id="hotSale" class="cacavs-contente"></div>
                 </div>
             </el-col>
             
             <el-col :xs="24" :md="12" :lg="9">
                 <div class="grid-content">
                     <p class="title">消费群体</p>
-                    <div id="consumer" :style="{width: '100%', height: '100%'}"></div>
+                    <div id="consumer" class="cacavs-contente"></div>
                 </div>
             </el-col>
             <el-col :xs="24" :md="12" :lg="8">
                 <div class="grid-content">
                     <p class="title">访客来源统计</p>
-                    <div id="visitor" :style="{width: '100%', height: '100%'}"></div>
+                    <!--  :style="{width: '100%', height: '100%'}" -->
+                    <div id="visitor" class="cacavs-contente"></div>
                 </div>
             </el-col>
             <!-- <el-col :xs="24" :md="12" :lg="5">
@@ -106,7 +107,7 @@ export default {
         }
     },
     beforeCreate () {
-        document.querySelector('.el-main').setAttribute('style', 'background-color:#0c0e18')
+        // document.querySelector('.el-main').setAttribute('style', 'background-color:#0c0e18')
     },
     beforeDestroy () {
         document.querySelector('.el-main').removeAttribute('style')
@@ -116,6 +117,7 @@ export default {
         this.hotSale();
         this.visitor();
         this.consumer();
+        
         // this.feedback();
     },
     methods: {
@@ -127,27 +129,25 @@ export default {
         zhexian(){
             let myChart  = this.$echarts.init(document.getElementById('zhexian'));
             myChart.setOption({
-                tooltip: {
-                    trigger: 'axis',
-                },
-                
                 legend: {
-                    data: ['今年', '去年'],
-                    textStyle:{
-                        color:'#fff'
-                    },
-                },
-                toolbox: {
-                    show: true,
-                    feature: {
-                        dataZoom: {
-                            yAxisIndex: 'none'
+                    top: "16px",
+                    right: '16px',
+                    data: [
+                        {
+                            name: "今年",
+                            textStyle: {
+                                color:'#c56cf0'
+
+                            }
                         },
-                        dataView: {readOnly: false},
-                        magicType: {type: ['line', 'bar']},
-                        restore: {},
-                        saveAsImage: {}
-                    }
+                        {
+                            name: "去年",
+                            textStyle: {
+                                color:'#18dcff'
+
+                            }
+                        }
+                    ]
                 },
                 xAxis: {
                     type: 'category',
@@ -157,147 +157,57 @@ export default {
                 yAxis: {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} 元'
+                        formatter: '{value}'
                     }
                 },
                 series: [
                     {
                         name: '今年',
                         type: 'line',
-                        data: [102465, 4578124, 245687, 1542752, 1245751, 235487],
-                        markPoint: {
-                            data: [
-                                {type: 'max', name: '最大值'},
-                                {type: 'min', name: '最小值'}
-                            ]
+                        itemStyle: {
+                            color: "#c56cf0"
                         },
+                        data: [7477851, 6578124, 7045687, 8542752, 5245751, 9235487],
                         markLine: {
                             data: [
                                 {type: 'average', name: '平均值'}
                             ]
                         }
+                        
                     },
                     {
                         name: '去年',
                         type: 'line',
-                        data: [124574, 5475112, 4251522, 2211554, 8477851, 54521, 2445621, 524574, 7475112, 1451522, 211554, 7477851],
-                        markPoint: {
-                            data: [
-                                {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
-                            ]
+                        itemStyle: {
+                            color: "#18dcff"
                         },
+                        data: [124574, 5475112, 4251522, 2211554, 8477851, 54521, 2445621, 524574, 7475112, 1451522, 211554, 7477851],
                         markLine: {
                             data: [
                                 {type: 'average', name: '平均值'},
-                                [{
-                                    symbol: 'none',
-                                    x: '90%',
-                                    yAxis: 'max'
-                                }, {
-                                    symbol: 'circle',
-                                    label: {
-                                        position: 'start',
-                                        formatter: '最大值'
-                                    },
-                                    type: 'max',
-                                    name: '最高点'
-                                }]
+                                [
+                                    {
+                                        symbol: 'none',
+                                        x: '90%',
+                                        yAxis: 'max'
+                                    }, 
+                                    {
+                                        symbol: 'circle',
+                                        label: {
+                                            position: 'start',
+                                            formatter: '最大值'
+                                        },
+                                        type: 'max',
+                                        name: '最高点'
+                                    }
+                                ]
                             ]
                         }
                     }
                 ]
             });
         },
-        // 消费群体
-        consumer(){
-            let myChart  = this.$echarts.init(document.getElementById('consumer'));
-            myChart.setOption({
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                },
-                legend: {
-                    data: ['男性', '女性'],
-                    textStyle:{
-                        color:'#fff'
-                    }
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '15%',
-                    containLabel: true,
-                    height:'400px'
-                },
-                xAxis: {
-                    type: 'value',
-                    boundaryGap: [0, 0.01]
-                },
-                yAxis: {
-                    type: 'category',
-                    data: ['18岁以下', '18~25岁', '25~35岁', '35~45岁', '45岁以上']
-                },
-                series: [
-                    {
-                        name: '女性',
-                        type: 'bar',
-                        data: [ 23489, 29034,630230,104970, 131744]
-                    },
-                    {
-                        name: '男性',
-                        type: 'bar',
-                        data: [ 23438, 31000,681807,121594, 134141]
-                    }
-                ]
-            })
-        },
-        // 访客来源统计
-        visitor(){
-            let myChart  = this.$echarts.init(document.getElementById('visitor'));
-            myChart.setOption({
-                tooltip: {
-                    trigger: 'item',
-                    formatter: '{a} <br/>{b} : {c} ({d}%)'
-                },
-                legend: {
-                    orient: 'vertical',
-                    left: 'left',
-                    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-                },
-                series: [
-                    {
-                        name: '访问来源',
-                        type: 'pie',
-                        radius: '55%',
-                        center: ['50%', '60%'],
-                        data: [
-                            {
-                                value: 335, 
-                                name: '直接访问', 
-                                colro: "#fff",
-                                itemStyle: {
-                                    
-                                }
-                            },
-                            {value: 310, name: '邮件营销', colro: "#fff"},
-                            {value: 234, name: '联盟广告', colro: "#fff"},
-                            {value: 135, name: '视频广告', colro: "#fff"},
-                            {value: 1548, name: '搜索引擎',colro: "#fff"}
-                        ],
-                        emphasis: {
-                            itemStyle: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        
-                        }
-                    }
-                ]
-            })
-        },
+
         // 热销商品饼状图
         hotSale(){
             let myChart  = this.$echarts.init(document.getElementById('hotSale'));
@@ -305,19 +215,17 @@ export default {
                 tooltip: {
                     trigger: 'item',
                     formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },   
+                legend: {
+                    orient: 'horizontal',
+                    top: "16px",
+                    right: '16px',
+                    data: ['家用电器', '电子产品', '美妆', '衣服', '其他']
                 },
-                // visualMap: {
-                //     show: false,
-                //     min: 80,
-                //     max: 600,
-                //     inRange: {
-                //         colorLightness: [0, 0.5]
-                //     }
-                // },
-               
+                
                 series: [
                     {
-                        name: '访问来源',
+                        // name: '访问来源',
                         type: 'pie',
                         radius: '55%',
                         center: ['50%', '50%'],
@@ -344,23 +252,24 @@ export default {
                                 }
                             },
                             {
-                                value: 235, 
-                                name: '其他',
-                                itemStyle: {
-                                    color: '#FEA47F'
-                                }
-                            },
-                            {
                                 value: 400, 
                                 name: '衣服',
                                 itemStyle: {
                                     color: '#D6A2E8'
                                 }
+                            },
+                            {
+                                value: 235, 
+                                name: '其他',
+                                itemStyle: {
+                                    color: '#FEA47F'
+                                }
                             }
+                            
                         ].sort(function (a, b) { return a.value - b.value; }),
                         roseType: 'radius',
                         label: {
-                            formatter: '{b}-{d}%',
+                            formatter: '{d}%',
                             // color: 'rgba(226, 113, 37, 0.8)'
                         },
                         labelLine: {
@@ -371,11 +280,6 @@ export default {
                             length: 10,
                             length2: 20
                         },
-                        // itemStyle: {
-                        //     color: '#c23531',
-                        //     shadowBlur: 200,
-                        //     shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        // },
                         animationType: 'scale',
                         animationEasing: 'elasticOut',
                         animationDelay: function (idx) {
@@ -385,6 +289,140 @@ export default {
                 ]
             })
         },
+
+        // 消费群体
+        consumer(){
+            let myChart  = this.$echarts.init(document.getElementById('consumer'));
+            myChart.setOption({
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    top: "16px",
+                    right: "16px",
+                    data: [
+                        {
+                            name: "男性"
+                        },
+                        {
+                            name: "女性"
+                        }
+                    ],
+                    
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    // bottom: '15%',
+                    containLabel: true,
+                    height:'400px'
+                },
+                xAxis: {
+                    type: 'value',
+                    boundaryGap: [0, 0.01]
+                },
+                yAxis: {
+                    type: 'category',
+                    data: ['18岁以下', '18~25岁', '25~35岁', '35~45岁', '45岁以上']
+                },
+                series: [
+                    
+                    {
+                        name: '女性',
+                        type: 'bar',
+                        barWidth: "20px",
+                        itemStyle: {
+                            color: "#ff3838"
+                        },
+                        data: [ 23489, 29034,54230,14970, 31744]
+                    },
+                    {
+                        name: '男性',
+                        type: 'bar',
+                        barWidth: "20px",
+                        itemStyle: {
+                            color: "#ff9f1a"
+                        },
+                        data: [ 13438, 31000,51807,21594, 34141]
+                    }
+                ]
+            })
+        },
+
+
+        // 访客来源统计
+        visitor(){
+            let myChart  = this.$echarts.init(document.getElementById('visitor'));
+            myChart.setOption({
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'horizontal',
+                    top: "16px",
+                    right: '16px',
+                    data: ['PC端', '移动端H5', '安卓app', '苹果app', '微信小程序']
+                },
+                series: [
+                    {
+                        name: '访问来源',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: [
+                            {
+                                value: 335, 
+                                name: 'PC端', 
+                                itemStyle: {
+                                    color: "#ff4d4d"   
+                                }
+                            },
+                            {
+                                value: 310,
+                                name: '移动端H5',
+                                itemStyle: {
+                                    color: "#18dcff"   
+                                } 
+                            },
+                            {
+                                value: 234, 
+                                name: '安卓app',
+                                itemStyle: {
+                                    color: "#7d5fff"   
+                                }
+                            },
+                            {
+                                value: 135, 
+                                name: '苹果app', 
+                                itemStyle: {
+                                    color: "#32ff7e"   
+                                }
+                            },
+                            {
+                                value: 1548, 
+                                name: '微信小程序',
+                                itemStyle: {
+                                    color: "#c56cf0"   
+                                }
+                            }
+                        ],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        
+                        }
+                    }
+                ]
+            })
+        },
+        
         // 客户反馈类型统计
         feedback(){
             let myChart  = this.$echarts.init(document.getElementById('feedback'));
@@ -457,13 +495,12 @@ export default {
         /** ------ elemnt 样式重置： 结束 ------- **/ 
         // background:#020913;
         .subTitle{
-            font-size: 30px;
-            color: #fca637;
-            text-shadow: 1px 0px 2px  #fff;
+            font-size: 18px;
+            // text-shadow: 1px 0px 2px  #fff;
         }
         .order_con{
-            color: #fff;
-            font-size: 28px;
+            color: #333;
+            font-size: 30px;
         }
         .data-header{
             .link {
@@ -521,7 +558,8 @@ export default {
             margin-bottom: 16px !important;
             padding: 16px 0;
             color: #333;
-            background-color: #0c0e18;
+            background-color: #fff;
+            // background-color: #0c0e18;
             .el-col:first-child{
                 padding-left: 16px !important;
                 padding-right: 8px !important;
@@ -539,12 +577,17 @@ export default {
                 line-height: 44px;
                 text-align: left;
                 border-radius: 4px 4px 0 0;
-                background: rgb(34, 49, 63);
+                background: #fa8231;
             }
             .first-left{
                 height: 100%;
                 border:1px solid #fff;
                 border-radius: 4px;
+                .el-row{
+                    border: 1px solid #f1f2f6;
+                    border-top: 0;
+                    border-radius: 0px 0 4px 4px;
+                }
                 .el-col{
                     height: 100%;
                     display: flex;
@@ -553,15 +596,33 @@ export default {
                     .grid-content{
                         display: flex;
                         flex-direction: column;
-                        justify-content: center;
+                        justify-content: flex-start;
                         align-items: center;
                         width: 100%;
                         height: 60%;
+                        
                         &.left{
                             border-right: 1px solid #e5e5e5;
+                            .order_num{
+                                .subTitle{
+                                    color: #e55039;
+                                }
+                                .order_con{
+                                    color: #eb2f06;
+                                    // text-shadow: 5px 5px 5px #FF0000;
+                                }
+                            }
                         }
                         &.right{
                             border-left: 1px solid #e5e5e5;
+                            .order_num{
+                                .subTitle{
+                                    color: #18dcff;
+                                }
+                                .order_con{
+                                    color: #17c0eb;
+                                }
+                            }
                         }
                     }
                     &:nth-child(1){
@@ -576,12 +637,17 @@ export default {
                 height: 100%;
                 border:1px solid #fff;
                 border-radius: 4px;
+                #zhexian{
+                    border: 1px solid #f1f2f6;
+                    border-top: 0;
+                    border-radius: 0px 0 4px 4px;    
+                }
             }
         }
         .data-content-sec{
             margin: 0 !important;
             padding:0 4px 16px;
-            background: #0c0e18;
+            background: #fff;
             >.el-col{
                 >.grid-content{
                     border-radius: 4px;
@@ -595,13 +661,22 @@ export default {
                     margin:0;
                     text-align: left;
                     height: 44px;
-                    background: rgb(34, 49, 63);
+                    background: #17c0eb;
                     line-height: 44px;
                     font-size: 14px;
                     padding-left: 20px;
                     border-radius: 4px 4px 0 0;
                     color: #f5f5f5;
                 }
+
+                .cacavs-contente{
+                    width: 100%;
+                    height: calc( 100% - 64px );
+                    border: 1px solid #f1f2f6;
+                    border-top: 0;
+                    border-radius: 0px 0 4px 4px;
+                }
+
             }
         }
     }
