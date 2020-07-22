@@ -106,12 +106,6 @@ export default {
             // order_money:'19999'
         }
     },
-    beforeCreate () {
-        // document.querySelector('.el-main').setAttribute('style', 'background-color:#0c0e18')
-    },
-    beforeDestroy () {
-        document.querySelector('.el-main').removeAttribute('style')
-    },
     mounted(){
         this.zhexian();
         this.hotSale();

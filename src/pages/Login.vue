@@ -1,22 +1,23 @@
 <template>
     <div class="login-page">
-        <el-form :model="loginForm" status-icon :rules="rules" ref="loginForm" class="login-ruleForm">
+        <el-form :model="loginForm" status-icon :rules="rules" ref="loginForm" class="login-ruleForm" @submit.native.prevent>
             <img src="../images/logo.png" alt="" class="logo">
-            <!-- 用户名吗 -->
+            <!-- 用户名 -->
             <el-form-item prop="username">
                 <el-input type="text" class="btn btn_uname" placeholder="请输入您的用户名" v-model="loginForm.username" autocomplete="off">
                 </el-input>
             </el-form-item>
             <!-- 密码 -->
             <el-form-item prop="password">
-                <el-input type="password" class="btn btn_upwd" placeholder="请输入您的密码" v-model="loginForm.password" autocomplete="off">
+                <el-input type="password" class="btn btn_upwd" placeholder="请输入您的密码" v-model="loginForm.password" 
+                autocomplete="off" >
                 </el-input>
             </el-form-item>
             <!-- 忘记密码 -->
-            <router-link to="/forget-password" class="forgetPassword">忘记密码</router-link>
+            <router-link to="/forget-password" class="forgetPassword" >忘记密码</router-link>
             <!-- 提交按钮 -->
             <el-form-item>
-                <el-button class="submit" @click="submitForm('loginForm')">立即登录</el-button>
+                <el-button class="submit" native-type="submit" @click="submitForm('loginForm')">立即登录</el-button>
             </el-form-item>
         </el-form>
 
@@ -109,7 +110,7 @@
                     }
                 });
             }
-        }
+        },
     }
 </script>
 
@@ -119,7 +120,7 @@
         top: 0;
         left: 0;
         width:100%;
-        height: 100%;
+        height: 100vh;
         background: url(../images/login.jpg) no-repeat center;
         .login-ruleForm{
             margin-left: -270px;
